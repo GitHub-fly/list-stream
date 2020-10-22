@@ -1,27 +1,27 @@
-"use strict";
+'use strict';
 
-const Controller = require("egg").Controller;
+const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
   async index() {
     const { ctx } = this;
-    ctx.body = "hello world";
+    ctx.body = 'hello world';
   }
 
   async list() {
     this.ctx.body = {
-      msg: "ok",
+      msg: 'ok',
       data: [
         {
-          name: "微服务",
+          name: '微服务',
           price: 100,
         },
         {
-          name: "Java",
+          name: 'Java',
           price: 88,
         },
         {
-          name: "JavaScript",
+          name: 'JavaScript',
           price: 77,
         },
       ],
