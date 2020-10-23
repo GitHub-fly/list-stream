@@ -2,7 +2,8 @@
 
 module.exports = (option, app) => {
     return async (ctx, next) => {
-        // 1. 获取 header 头token
+        console.log('8888888888888888888888888888888888888')
+        // 1. 获取 header 头 token
         const { token } = ctx.header
         if (!token) {
             ctx.throw(400, '没有权限访问该接口!')
@@ -39,7 +40,8 @@ module.exports = (option, app) => {
 
         // 5. 把 user 信息挂载到全局ctx上
         ctx.authUser = user
-
+        console.log('****************')
+        console.log(ctx.authUser)
         await next()
     }
 }
