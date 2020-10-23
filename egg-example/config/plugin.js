@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /** @type Egg.EggPlugin */
 module.exports = {
@@ -15,4 +15,8 @@ module.exports = {
         enable: true,
         package: 'egg-valparams',
     },
-};
+    redis: {
+        enable: true,
+        package: 'egg-redis',
+    },
+}

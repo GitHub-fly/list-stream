@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
@@ -8,18 +8,18 @@ module.exports = (appInfo) => {
      * built-in config
      * @type {Egg.EggAppConfig}
      **/
-    const config = (exports = {});
+    const config = (exports = {})
 
     // use for cookie sign key, should change to your own and keep security
-    config.keys = appInfo.name + '_1603251908901_4149';
+    config.keys = appInfo.name + '_1603251908901_4149'
 
     // add your middleware config here
-    config.middleware = ['errorHandler'];
+    config.middleware = ['errorHandler']
 
     // add your user config here
     const userConfig = {
         // myAppName: 'egg',
-    };
+    }
 
     config.security = {
         // 关闭 csrf
@@ -28,12 +28,12 @@ module.exports = (appInfo) => {
         },
         // 跨域白名单
         domainWhiteList: ['http://localhost:3333'],
-    };
+    }
     // 允许跨域的方法
     config.cors = {
         origin: '*',
         allowMethods: 'GET, PUT, POST, DELETE, PATCH',
-    };
+    }
 
     config.sequelize = {
         dialect: 'mysql',
@@ -57,21 +57,31 @@ module.exports = (appInfo) => {
             // 所有驼峰命名格式化
             underscored: true,
         },
-    };
+    }
 
     // 参数校验
     config.valpaarams = {
         locaale: 'zh-cn',
         throwError: true,
-    };
+    }
 
     // 随机密钥
     config.crypto = {
         secret: 'qhdgw@45ncashdaksh2!#@3nxjdas*_672',
-    };
+    }
+
+    // redis存储
+    config.redis = {
+        client: {
+            port: 6379, // Redis port
+            host: '127.0.0.1', // Redis host
+            password: '',
+            db: 1,
+        },
+    }
 
     return {
         ...config,
         ...userConfig,
-    };
-};
+    }
+}
