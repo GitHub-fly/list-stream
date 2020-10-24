@@ -6,7 +6,9 @@ const fs = require('fs')
 const path = require('path')
 
 class FileController extends Controller {
-    // 上传
+    /**
+     * 文件上传
+     */
     async upload() {
         const { ctx, app, service } = this
         const currentUser = ctx.authUser
@@ -37,9 +39,9 @@ class FileController extends Controller {
                 f = res
             })
         }
-        //取得上传的文件对象
+        // 取得上传的文件对象
         const file = ctx.request.files[0]
-        //动态将目录名称作为前缀和文件名拼接
+        // 动态将目录名称作为前缀和文件名拼接
         const name = f.name + '/' + ctx.genID(10) + path.extname(file.filename)
 
         // 判断用户网盘内存是否不足
@@ -61,10 +63,12 @@ class FileController extends Controller {
             console.log(err)
         }
 
-        //得到文件url
+        // 得到文件url
         console.log(result.url)
 
-        // 写入到数据表
+        /**
+         * 写入到数据表
+         */
         if (result) {
             let addData = {
                 name: file.filename,
@@ -142,6 +146,45 @@ class FileController extends Controller {
         ctx.apiSuccess({
             rows,
         })
+    }
+
+    /**
+     * 创建文件夹
+     */
+    async createdir() {
+        const { ctx, app } = this
+        const user_id = ctx.authUser.id
+
+        this.ctx.validate({
+            file_id: {
+                required: true,
+                type: 'int',
+                defValue: 0,
+                desc: '目录id',
+            },
+            name: {
+                required: true,
+                type: 'string',
+                desc: '文件夹名称',
+            },
+        })
+
+        let { file_id, name } = ctx.request.body
+
+        // 验证目录 id 是否存在
+        if (file_id) {
+            await this.service.file.isDirExist(file_id)
+        }
+
+        let res = await app.model.File.create({
+            name,
+            file_id,
+            user_id,
+            isdir: 1,
+            size: 0,
+        })
+
+        this.ctx.apiSuccess(res)
     }
 }
 
