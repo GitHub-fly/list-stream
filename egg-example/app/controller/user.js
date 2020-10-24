@@ -84,6 +84,8 @@ class UserController extends Controller {
                 desc: '密码',
             },
         })
+        console.log('*************')
+        console.log(ctx)
         // 获取到数据
         const { username, password } = ctx.request.body
         // 验证用户是否存在
@@ -133,6 +135,17 @@ class UserController extends Controller {
             this.ctx.throw(400, '密码错误')
         }
         return true
+    }
+
+    /**
+     * 剩余容量
+     */
+    async getSize() {
+        const { ctx, service } = this
+        return ctx.apiSuccess({
+            total_size: ctx.authUser.total_size,
+            used_size: ctx.authUser.used_size,
+        })
     }
 }
 

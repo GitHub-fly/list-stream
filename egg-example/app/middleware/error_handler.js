@@ -2,7 +2,6 @@
 
 module.exports = (option, app) => {
     return async function errorHandler(ctx, next) {
-        console.log('999999999999999999999999999999')
         try {
             await next()
             // 404 处理
