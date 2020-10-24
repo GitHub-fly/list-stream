@@ -15,9 +15,9 @@ module.exports = {
     getToken(value) {
         return this.app.jwt.sign(value, this.app.config.jwt.secret)
     },
-    
+
     // 生成唯一ID
-    genID(length) {
+    getID(length) {
         return Number(
             Math.random().toString().substr(3, length) + Date.now()
         ).toString(36)

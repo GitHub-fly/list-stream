@@ -30,19 +30,19 @@ class FileController extends Controller {
 
         const file_id = ctx.query.file_id
         console.log(file_id + '&&&&&&&&&')
-        let f
         // 目录id是否存在
         if (file_id > 0) {
-            // 目录是否存在,存在就返回目录对象，从而取得目录名字，不存在直接在service就出错返回了
-            await service.file.isDirExist(file_id).then((res) => {
-                console.log(res + '>>>>>>>>>>')
-                f = res
-            })
+            // 目录是否存在
+            await service.file.isDirExist(file_id)
         }
         // 取得上传的文件对象
         const file = ctx.request.files[0]
-        // 动态将目录名称作为前缀和文件名拼接
-        const name = f.name + '/' + ctx.genID(10) + path.extname(file.filename)
+
+        // 根据 file_id 一直向上找到顶层目录
+        const prefixPath = await service.file.seachDir(file_id)
+        console.log(prefixPath)
+        // 拼接处最终文件上传目录
+        const name = prefixPath + ctx.getID(10) + path.extname(file.filename)
 
         // 判断用户网盘内存是否不足
         let s = await new Promise((resolve, reject) => {
@@ -88,7 +88,6 @@ class FileController extends Controller {
 
             return ctx.apiSuccess(res)
         }
-
         ctx.apiFail('上传失败')
     }
 
@@ -185,6 +184,49 @@ class FileController extends Controller {
         })
 
         this.ctx.apiSuccess(res)
+    }
+
+    /**
+     * 重命名
+     */
+    async rename() {
+        const { ctx, app } = this
+        const user_id = ctx.authUser.id
+
+        ctx.validate({
+            id: {
+                required: true,
+                type: 'int',
+                desc: '记录',
+            },
+            file_id: {
+                required: true,
+                type: 'int',
+                defValue: 0,
+                desc: '目录id',
+            },
+            name: {
+                required: true,
+                type: 'string',
+                desc: '文件名称',
+            },
+        })
+
+        let { id, file_id, name } = ctx.request.body
+
+        // 验证目录 id 是否存在
+        if (file_id > 0) {
+            await this.service.file.isDirExist(file_id)
+        }
+
+        // 文件是否存在
+        let f = await this.service.file.isExist(id)
+
+        f.name = name
+
+        let res = await f.save()
+
+        ctx.apiSuccess(res)
     }
 }
 
