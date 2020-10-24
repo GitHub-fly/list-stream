@@ -24,8 +24,8 @@ class FileController extends Controller {
                 required: true,
                 type: 'int',
                 defValue: 0,
-                desc: '目录id'
-            }
+                desc: '目录id',
+            },
         })
 
         const file_id = ctx.query.file_id
@@ -78,7 +78,7 @@ class FileController extends Controller {
                 user_id: currentUser.id,
                 size: parseInt(s),
                 isdir: 0,
-                url: result.url
+                url: result.url,
             }
             let res = await app.model.File.create(addData)
 
@@ -102,35 +102,35 @@ class FileController extends Controller {
                 required: true,
                 type: 'int',
                 defValue: 0,
-                desc: '目录id'
+                desc: '目录id',
             },
             orderby: {
                 required: false,
                 type: 'string',
                 defValue: 'name',
                 range: {
-                    in: ['name', 'created_time']
+                    in: ['name', 'created_time'],
                 },
-                desc: '排序'
+                desc: '排序',
             },
             type: {
                 required: false,
                 type: 'string',
-                desc: '类型'
-            }
+                desc: '类型',
+            },
         })
 
         const { file_id, orderby, type } = ctx.query
 
         let where = {
             user_id,
-            file_id
+            file_id,
         }
 
         if (type && type != 'all') {
             const Op = app.Sequelize.Op
             where.ext = {
-                [Op.like]: type + '%'
+                [Op.like]: type + '%',
             }
         }
 
@@ -138,12 +138,12 @@ class FileController extends Controller {
             where,
             order: [
                 ['isdir', 'desc'],
-                [orderby, 'desc']
-            ]
+                [orderby, 'desc'],
+            ],
         })
 
         ctx.apiSuccess({
-            rows
+            rows,
         })
     }
 
@@ -159,13 +159,13 @@ class FileController extends Controller {
                 required: true,
                 type: 'int',
                 defValue: 0,
-                desc: '目录id'
+                desc: '目录id',
             },
             name: {
                 required: true,
                 type: 'string',
-                desc: '文件夹名称'
-            }
+                desc: '文件夹名称',
+            },
         })
 
         let { file_id, name } = ctx.request.body
@@ -180,7 +180,7 @@ class FileController extends Controller {
             file_id,
             user_id,
             isdir: 1,
-            size: 0
+            size: 0,
         })
 
         this.ctx.apiSuccess(res)
@@ -197,19 +197,19 @@ class FileController extends Controller {
             id: {
                 required: true,
                 type: 'int',
-                desc: '记录'
+                desc: '记录',
             },
             file_id: {
                 required: true,
                 type: 'int',
                 defValue: 0,
-                desc: '目录id'
+                desc: '目录id',
             },
             name: {
                 required: true,
                 type: 'string',
-                desc: '文件名称'
-            }
+                desc: '文件名称',
+            },
         })
 
         let { id, file_id, name } = ctx.request.body
@@ -240,8 +240,8 @@ class FileController extends Controller {
             ids: {
                 require: true,
                 type: 'string',
-                desc: '记录'
-            }
+                desc: '记录',
+            },
         })
         let { ids } = ctx.request.body
 
@@ -251,8 +251,8 @@ class FileController extends Controller {
         let files = await app.model.File.findAll({
             where: {
                 id: ids,
-                user_id
-            }
+                user_id,
+            },
         })
 
         let size = 0
@@ -263,8 +263,8 @@ class FileController extends Controller {
         let res = await app.model.File.destroy({
             where: {
                 id: ids,
-                user_id
-            }
+                user_id,
+            },
         })
 
         if (res) {
@@ -287,8 +287,8 @@ class FileController extends Controller {
             keyword: {
                 required: true,
                 type: 'string',
-                desc: '关键字'
-            }
+                desc: '关键字',
+            },
         })
 
         let { keyword } = ctx.query
@@ -298,15 +298,15 @@ class FileController extends Controller {
         let rows = await app.model.File.findAll({
             where: {
                 name: {
-                    [Op.like]: `%${keyword}%`
+                    [Op.like]: `%${keyword}%`,
                 },
                 isdir: 0,
-                user_id
-            }
+                user_id,
+            },
         })
 
         ctx.apiSuccess({
-            rows
+            rows,
         })
     }
 }
