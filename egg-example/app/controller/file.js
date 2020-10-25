@@ -32,9 +32,6 @@ class FileController extends Controller {
         // 处理传非根目录的情况
         let prefixPath = ''
 
-        // 取得上传的文件对象
-        const file = ctx.request.files[0]
-
         // 根据 file_id 一直向上找到顶层目录
         if (file_id > 0) {
             const prefixPath = await service.file.seachDir(file_id)
