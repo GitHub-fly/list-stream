@@ -13,8 +13,6 @@ class FileController extends Controller {
         const { ctx, app, service } = this
         const currentUser = ctx.authUser
 
-        console.log(ctx.request.files)
-
         if (!ctx.request.files) {
             return ctx.apiFail('请先选择上传文件')
         }
@@ -27,20 +25,27 @@ class FileController extends Controller {
                 desc: '目录id',
             },
         })
+        // 获取上传的文件
+        const file = ctx.request.files[0]
 
         const file_id = ctx.query.file_id
-        console.log(file_id + '&&&&&&&&&')
-        // 目录id是否存在
-        if (file_id > 0) {
-            // 目录是否存在
-            await service.file.isDirExist(file_id)
-        }
+        // 处理传非根目录的情况
+        let prefixPath = ''
+
         // 取得上传的文件对象
         const file = ctx.request.files[0]
 
         // 根据 file_id 一直向上找到顶层目录
-        const prefixPath = await service.file.seachDir(file_id)
-        console.log(prefixPath)
+        if (file_id > 0) {
+            const prefixPath = await service.file.seachDir(file_id)
+            console.log(prefixPath)
+        }
+
+        // 处理传根目录的情况
+        if (file_id === 0) {
+            prefixPath = '/'
+        }
+
         // 拼接处最终文件上传目录
         const name = prefixPath + ctx.getID(10) + path.extname(file.filename)
 

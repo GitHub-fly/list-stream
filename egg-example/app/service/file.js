@@ -19,7 +19,7 @@ class FileService extends Service {
     }
 
     /**
-     * 根据 file_id 查询目录名称（无限向上知道根据点）
+     * 根据 file_id 查询目录名称（无限向上直到根据点）
      * @param {*} id
      */
     async seachDir(id) {
