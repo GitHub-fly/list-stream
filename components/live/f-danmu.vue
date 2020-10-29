@@ -33,20 +33,29 @@ export default {
 		};
 	},
 	mounted() {
-		let id = 1;
-		setInterval(() => {
-			this.list.push({
-				id: id,
-				name: '观众' + id,
-				content: '发言_' + id
-			});
-			// 置于底部
-			this.toBottom();
-			id++;
-		}, 2000);
+		// let id = 1;
+		// setInterval(() => {
+		// 	this.list.push({
+		// 		id: id,
+		// 		name: '观众' + id,
+		// 		content: '发言_' + id
+		// 	});
+		// 	// 置于底部
+		// 	this.toBottom();
+		// 	id++;
+		// }, 2000);
 	},
 	methods: {
-		toBottomm() {
+		/**
+		 * 发送弹幕
+		 * @param {Object} data
+		 */
+		send(data) {
+			this.list.push(data);
+			// 置于底部
+			this.toBottom();
+		},
+		toBottom() {
 			setTimeout(() => {
 				let len = this.list.length;
 				if (len > 0 && this.list[len - 1]) {
