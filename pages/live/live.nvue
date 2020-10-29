@@ -54,7 +54,7 @@
 			<video class="flex-1" src="http://ivi.bupt.edu.cn/hls/btv2hd.m3u8" autoplay :controls="false"></video>
 		</view>
 		<!-- 弹幕区 -->
-		<view style="height: 200rpx;" class="bg-main">弹幕区</view>
+		<f-danmu></f-danmu>
 		<!-- 底部区 -->
 		<view style="height: 120rpx;" class="flex align-center justify-between fixed-bottom ">
 			<view class="px-2">
@@ -74,9 +74,11 @@
 
 <script>
 import fGift from '../../components/live/f-gift.vue';
+import fDanmu from '../../components/live/f-danmu.vue';
 export default {
 	components: {
-		fGift
+		fGift,
+		fDanmu
 	},
 	mounted() {
 		// 送礼物演示
