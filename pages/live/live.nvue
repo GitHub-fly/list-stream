@@ -1,13 +1,8 @@
 <template>
-	<view class="flex-column p-2" :style="'margin-top:' + statusBarHeight + 'px'">
-		<!-- 	<view style="height: 400rpx;" :style="'margin-top:' + statusBarHeight + 'px'">
-			<video src="http://ivi.bupt.edu.cn/hls/btv2hd.m3u8" autoplay controls="false" class="flex-1"></video>
-		</view>
-		<view class="bg-light" style="height: 1000rpx; z-index:20">
-			<button @tap="goback" class="bg-main mt-3">返回</button>
-		</view> -->
+	<view class="flex-column p-2">
 		<!-- 最上面的区域 -->
-		<view>
+		<!-- style="position: fixed; left: 0; right: 0; height: 460rpx;" -->
+		<view class="" :style="'margin-top:' + statusBarHeight + 'px'">
 			<!-- 主播和观看人数头像信息 -->
 			<view class="flex justify-between align-center" style="height: 80rpx;">
 				<!-- 主播 -->
@@ -43,39 +38,73 @@
 				</view>
 			</view>
 			<!-- 金币区域 -->
-			<view class="mt-2 flex justify-start align-center" style="height: 80rpx;">
+			<view
+				class="mt-2 flex justify-start align-center rounded-circle"
+				style="height: 80rpx; background-color: rgba(0, 0, 0, 0.4);"
+			>
 				<text class="font-lg text-warning">金币</text>
 				<text class="font-md text-light">100</text>
 			</view>
 			<!-- 刷礼物区域 -->
-			<view class="mt-4 flex bg-main" style="height: 300rpx;">
-				<view class="col-4 flex liwu" style="border-radius: 20px; padding: 0px;">
-					<image
-						src="../../static/gift/4.png"
-						style="width: 70rpx; height: 70rpx;"
-						class="rounded-circle"
-					></image>
+			<view class="mt-4 bg-main" style="height: 300rpx;">
+				<view class="flex align-center">
+					<view
+						class="col-5 flex align-center justify-between"
+						style="height: 70rpx; border-radius: 20px; padding: 0px;
+						background-image: linear-gradient(to right, #f7f0ac, #f0acf7);"
+					>
+						<view class="flex">
+							<image
+								src="../../static/gift/4.png"
+								style="width: 60rpx; height: 60rpx;"
+								class="rounded-circle"
+							></image>
+							<view class="flex-column ml-1">
+								<text class="font-sm text-light">观众</text>
+								<text class="font-sm text-light">送蛋糕</text>
+							</view>
+						</view>
+						<image
+							src="../../static/gift/3.png"
+							style="width: 60rpx; height: 60rpx;"
+							class="rounded-circle"
+						></image>
+					</view>
+					<text class="font-lg text-warning ml-1">X 10</text>
 				</view>
-				<text class="font-lg text-warning">X 10</text>
 			</view>
+			<f-gift ref="gift"></f-gift>
 		</view>
 		<!-- 中间视频区域 -->
-		<view class="bg-dan">
-			<video src="http://ivi.bupt.edu.cn/hls/btv2hd.m3u8" autoplay :controls="false"></video>
+		<!-- :style="'margin-top:' + (460 + statusBarHeight) + 'rpx'" -->
+		<view style="height: 400rpx;">
+			<video class="flex-1" src="http://ivi.bupt.edu.cn/hls/btv2hd.m3u8" autoplay :controls="false"></video>
 		</view>
 		<!-- 弹幕区 -->
-		<view style="height: 250rpx;" class="bg-main">
-			弹幕区
-		</view>
+		<view style="height: 15000rpx;" class="bg-main">弹幕区</view>
 		<!-- 底部区 -->
-		<view style="height: 150rpx;" class="bg-danger">
-			底部
-		</view>
+		<view style="height: 80rpx;" class="bg-danger fixed-bottom">底部</view>
 	</view>
 </template>
 
 <script>
+import fGift from '../../components/live/f-gift.vue';
 export default {
+	components: {
+		fGift
+	},
+	mounted() {
+		// 送礼物演示
+		setInterval(() => {
+			this.$refs.gift.send({
+				username: '发送人',
+				avatar: '',
+				gift_name: '蛋糕',
+				gift_image: '/static/gift/3.png',
+				num: 1
+			});
+		}, 3000);
+	},
 	data() {
 		return {
 			statusBarHeight: 0
@@ -93,8 +122,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.liwu {
-	background: linear-gradient(to left, #acb6e5, #86fde8);
-}
-</style>
+<style scoped lang="scss"></style>
