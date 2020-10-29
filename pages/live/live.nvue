@@ -46,33 +46,6 @@
 				<text class="font-md text-light">100</text>
 			</view>
 			<!-- 刷礼物区域 -->
-			<view class="mt-4 bg-main" style="height: 300rpx;">
-				<view class="flex align-center">
-					<view
-						class="col-5 flex align-center justify-between"
-						style="height: 70rpx; border-radius: 20px; padding: 0px;
-						background-image: linear-gradient(to right, #f7f0ac, #f0acf7);"
-					>
-						<view class="flex">
-							<image
-								src="../../static/gift/4.png"
-								style="width: 60rpx; height: 60rpx;"
-								class="rounded-circle"
-							></image>
-							<view class="flex-column ml-1">
-								<text class="font-sm text-light">观众</text>
-								<text class="font-sm text-light">送蛋糕</text>
-							</view>
-						</view>
-						<image
-							src="../../static/gift/3.png"
-							style="width: 60rpx; height: 60rpx;"
-							class="rounded-circle"
-						></image>
-					</view>
-					<text class="font-lg text-warning ml-1">X 10</text>
-				</view>
-			</view>
 			<f-gift ref="gift"></f-gift>
 		</view>
 		<!-- 中间视频区域 -->
@@ -81,9 +54,21 @@
 			<video class="flex-1" src="http://ivi.bupt.edu.cn/hls/btv2hd.m3u8" autoplay :controls="false"></video>
 		</view>
 		<!-- 弹幕区 -->
-		<view style="height: 15000rpx;" class="bg-main">弹幕区</view>
+		<view style="height: 200rpx;" class="bg-main">弹幕区</view>
 		<!-- 底部区 -->
-		<view style="height: 80rpx;" class="bg-danger fixed-bottom">底部</view>
+		<view style="height: 120rpx;" class="flex align-center justify-between fixed-bottom ">
+			<view class="px-2">
+				<view class="btn px-3"><text class="text-white font" @click="openInPut">说点什么...</text></view>
+			</view>
+			<view class="flex align-center">
+				<view class="btn btn-icon">
+					<text class="iconfont text-white" style="font-size: 40px;">&#xe633;</text>
+				</view>
+				<view class="btn btn-icon bg-warning"><text class="iconfont">&#xe67c;</text></view>
+				<view class="btn btn-icon"><text class="iconfont text-white">&#xe7cd;</text></view>
+				<view class="btn btn-icon"><text class="iconfont text-white">&#xe607;</text></view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -122,4 +107,16 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.btn {
+	height: 80rpx;
+	border-radius: 100rpx;
+	background-color: rgba(255, 255, 255, 0.12);
+	align-items: center;
+	justify-content: center;
+}
+.btn-icon {
+	width: 80rpx;
+	margin-right: 20rpx;
+}
+</style>

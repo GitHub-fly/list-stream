@@ -3,8 +3,10 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				// "navigationBarTextStyle": "white", // 导航栏标题颜色及状态栏前景颜色，仅支持 black/white
+				// 导航栏标题颜色及状态栏前景颜色，仅支持 black/white
+				// "navigationBarTextStyle": "black", 
 				"app-plus": {
+					// 沉浸式
 					"titleNView": false
 				}
 			}
@@ -37,17 +39,17 @@
 		"borderStyle": "black",
 		"midButton": {
 			"iconPath": "static/tabbar/min.png",
-			"iconWidth": "65px",
-			"height": "70px"
+			"iconWidth": "60px",
+			"height": "65px"
 		},
 		"list": [{
 			"iconPath": "./static/tabbar/find.png",
-			"selectedIconPath": "static/tabbar/find-selected.png",
+			"selectedIconPath": "./static/tabbar/find-selected.png",
 			"pagePath": "pages/index/index",
 			"text": "发现"
 		}, {
-			"iconPath": "static/tabbar/my.png",
-			"selectedIconPath": "static/tabbar/my-selected.png",
+			"iconPath": "./static/tabbar/my.png",
+			"selectedIconPath": "./static/tabbar/my-selected.png",
 			"pagePath": "pages/my/my",
 			"text": "我的"
 		}]
