@@ -1,5 +1,5 @@
 <template>
-	<list style="width: 520rpx; height: 500rpx;" :show-scrollbar="false" :bounce="false">
+	<list style="width: 520rpx; height: 300rpx;" :show-scrollbar="false" :bounce="false">
 		<cell
 			class="flex align-center px-3 pt-3"
 			v-for="(item, index) in gifts"
@@ -64,8 +64,8 @@ export default {
 			// 定时器，5秒内从数组移除掉，思考：移除了哪儿个
 			if (this.gifts.length) {
 				let timer = setTimeout(() => {
-					this.gifts.splice(0, 1)
-				}, 5000)
+					this.gifts.splice(0, 1);
+				}, 5000);
 			}
 		}
 	}
