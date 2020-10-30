@@ -123,7 +123,9 @@
 					</swiper-item>
 				</swiper>
 				<view style="height: 100rpx;" class="flex align-center justify-end">
-					<view class="flex-center py-2 px-2 mr-3 rounded bg-warning"><text class="font">充值</text></view>
+					<view class="flex-center py-2 px-2 mr-3 rounded bg-warning" @click="openCoin">
+						<text class="font">充值</text>
+					</view>
 					<view class="flex-center py-2 px-2 mr-3 rounded bg-main" @click="sendGift">
 						<text class="font text-white">发送</text>
 					</view>
@@ -199,6 +201,11 @@ export default {
 				num: 10
 			});
 			this.closeGift();
+		},
+		openCoin() {
+			uni.navigateTo({
+				url: '../coin/coin'
+			});
 		},
 		goback() {
 			uni.navigateBack({});
