@@ -3,43 +3,47 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				// 导航栏标题颜色及状态栏前景颜色，仅支持 black/white
-				// "navigationBarTextStyle": "black", 
-				"app-plus": {
-					// 沉浸式
-					"titleNView": false
-				}
-			}
-		},
-		{
-			"path": "pages/my/my",
-			"style": {
-				"navigationBarTitleText": "我的"
-			}
-		},
-		{
-			"path": "pages/live/live",
-			"style": {
-				"navigationBarTextStyle": "white",
-				"backgroundColor": "#000000",
+				// "navigationBarTextStyle": "white", // 导航栏标题颜色及状态栏前景颜色，仅支持 black/white
 				"app-plus": {
 					"titleNView": false
 				}
 			}
-		},
-		{
-			"path": "pages/coin/coin",
-			"style": {
-				"navigationBarTitleText": "我的余额",
-				"navigationBarBackgroundColor": "#FFFFFF",
-				"navigationBarTextStyle": "black"
-			}
-
 		}
-	],
+	    ,{
+            "path": "pages/live/live",
+            "style": {
+            	"navigationBarTextStyle": "white",
+            	"backgroundColor": "#000000",
+            	"app-plus": {
+            		"titleNView": false
+            	}
+    		}
+            
+        }
+        ,{
+            "path": "pages/my/my",
+            "style": {
+            	"navigationBarTitleText": "我的",
+            	"navigationBarTextStyle": "white",
+            	"backgroundColor": "#FFFFFF",
+            	"app-plus": {
+            		"titleNView": false
+            	}
+            } 
+        }
+        ,{
+            "path": "pages/coin/coin",
+            "style": {
+            	"navigationBarTitleText": "我的余额",
+            	"navigationBarBackgroundColor": "#FFFFFF",
+            	"navigationBarTextStyle": "black"
+            }
+            
+        }
+    ],
 	"globalStyle": {
-		// "navigationBarTextStyle": "white",
-		// "navigationBarTitleText": "直播",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "直播"
 		// "navigationBarBackgroundColor": "#8745FF",
 		// "backgroundColor": "#8745FF"
 	},
@@ -49,18 +53,18 @@
 		"backgroundColor": "#FFFFFF",
 		"borderStyle": "black",
 		"midButton": {
-			"iconPath": "static/tabbar/min.png",
-			"iconWidth": "60px",
-			"height": "65px"
+			"iconPath": "./static/tabbar/min.png",
+			"iconWidth": "65px",
+			"height": "70px"
 		},
 		"list": [{
 			"iconPath": "./static/tabbar/find.png",
-			"selectedIconPath": "./static/tabbar/find-selected.png",
+			"selectedIconPath": "static/tabbar/find-selected.png",
 			"pagePath": "pages/index/index",
 			"text": "发现"
 		}, {
-			"iconPath": "./static/tabbar/my.png",
-			"selectedIconPath": "./static/tabbar/my-selected.png",
+			"iconPath": "static/tabbar/my.png",
+			"selectedIconPath": "static/tabbar/my-selected.png",
 			"pagePath": "pages/my/my",
 			"text": "我的"
 		}]
