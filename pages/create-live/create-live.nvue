@@ -47,7 +47,11 @@
 					<text class="iconfont text-white mb-1">&#xe605;</text>
 					<text class="text-white font">翻转</text>
 				</view>
-				<view class="flex flex-column align-center justify-center" style="height: 120rpx;width: 100rpx;">
+				<view
+					class="flex flex-column align-center justify-center"
+					style="height: 120rpx;width: 100rpx;"
+					@click="openPopup('mode')"
+				>
 					<text class="iconfont text-white mb-1">&#xe60c;</text>
 					<text class="text-white font">画质</text>
 				</view>
@@ -67,11 +71,38 @@
 		>
 			<text class="text-white font-md">开始视频直播</text>
 		</view>
+
+		<!-- 页面弹框部分 -->
+		<uni-popup type="bottom" ref="popup">
+			<view class="bg-white">
+				<view class="flex align-center justify-center border-bottom" style="height: 90rpx;">
+					<text class="font-md">{{ popupTitle }}</text>
+				</view>
+				<!-- 画质选择 -->
+				<view v-if="popupType === 'mode'">
+					<view
+						class="flex align-center justify-center py-2"
+						v-for="(item, index) in modeList"
+						:key="index"
+						:class="mode === item.type ? 'bg-main' : ''"
+						@click="chooseMode(item)"
+					>
+						<text class="font-md" :class="mode === item.type ? 'text-white' : ''">{{ item.desc }}</text>
+					</view>
+				</view>
+				<view class="f-divider"></view>
+				<view class="flex align-center justify-center" style="height: 90rpx;" hover-class="bg-light">
+					<text class="font-md">取消</text>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
 export default {
+	components: { uniPopup },
 	data() {
 		return {
 			// 直播服务器地址，暂空
@@ -90,7 +121,22 @@ export default {
 			windowHeight: 0,
 			// 上下文
 			context: null,
-			statusBarHeight: 0
+			statusBarHeight: 0,
+			modeList: [
+				{
+					type: 'SD',
+					desc: '标清'
+				},
+				{
+					type: 'HD',
+					desc: '高清'
+				},
+				{
+					type: 'FHD',
+					desc: '超清'
+				}
+			],
+			popupType: 'mode'
 		};
 	},
 	/**
@@ -110,7 +156,27 @@ export default {
 	},
 	methods: {
 		/**
-		 *
+		 * 画质选择
+		 * @param {Object} item
+		 */
+		chooseMode(item) {
+			this.mode = item.type;
+			uni.showToast({
+				title: '画质切换为' + item.desc,
+				icon: 'none'
+			});
+			this.$refs.popup.close();
+		},
+		/**
+		 * 打开弹出框
+		 * @param {Object} type
+		 */
+		openPopup(type) {
+			this.popupType = type;
+			this.$refs.popup.open();
+		},
+		/**
+		 * 切换镜头
 		 */
 		switchCamera() {
 			this.context.switchCamera({
