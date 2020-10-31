@@ -55,11 +55,19 @@
 					<text class="iconfont text-white mb-1">&#xe60c;</text>
 					<text class="text-white font">画质</text>
 				</view>
-				<view class="flex flex-column align-center justify-center" style="height: 120rpx;width: 100rpx;">
+				<view
+					@click="openPopup('beauty')"
+					class="flex flex-column align-center justify-center"
+					style="height: 120rpx;width: 100rpx;"
+				>
 					<text class="iconfont text-white mb-1">&#xe632;</text>
 					<text class="text-white font">美颜</text>
 				</view>
-				<view class="flex flex-column align-center justify-center" style="height: 120rpx;width: 100rpx;">
+				<view
+					@click="openPopup('whiteness')"
+					class="flex flex-column align-center justify-center"
+					style="height: 120rpx;width: 100rpx;"
+				>
 					<text class="iconfont text-white mb-1">&#xe631;</text>
 					<text class="text-white font">美白</text>
 				</view>
@@ -90,6 +98,30 @@
 						<text class="font-md" :class="mode === item.type ? 'text-white' : ''">{{ item.desc }}</text>
 					</view>
 				</view>
+				<!-- 美颜 -->
+				<view v-else-if="popupType === 'beauty'">
+					<slider
+						@change="handleSliderChange"
+						:min="0"
+						:max="9"
+						:step="1"
+						:value="beauty"
+						:block-size="18"
+						show-value
+					/>
+				</view>
+				<!-- 美白 -->
+				<view v-else>
+					<slider
+						@change="handleSliderChange"
+						:min="0"
+						:max="9"
+						:step="1"
+						:value="whiteness"
+						:block-size="18"
+						show-value
+					/>
+				</view>
 				<view class="f-divider"></view>
 				<view class="flex align-center justify-center" style="height: 90rpx;" hover-class="bg-light">
 					<text class="font-md">取消</text>
@@ -103,6 +135,7 @@
 import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
 export default {
 	components: { uniPopup },
+
 	data() {
 		return {
 			// 直播服务器地址，暂空
@@ -154,7 +187,20 @@ export default {
 		this.context = uni.createLivePusherContext('livePusher', this);
 		this.startPreview();
 	},
+	computed: {
+		popupTitle() {
+			let o = {
+				mode: '画质',
+				beauty: '美颜',
+				whiteness: '美白'
+			};
+			return o[this.popupType];
+		}
+	},
 	methods: {
+		handleSliderChange(e) {
+			this[this.popupType] = e.detail.value
+		},
 		/**
 		 * 画质选择
 		 * @param {Object} item
