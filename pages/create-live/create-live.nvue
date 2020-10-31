@@ -85,7 +85,8 @@ export default {
 			// 窗体高度
 			windowHeight: 0,
 			// 上下文
-			context: null
+			context: null,
+			statusBarHeight: 0
 		};
 	},
 	/**
@@ -94,6 +95,7 @@ export default {
 	onLoad() {
 		let res = uni.getSystemInfoSync();
 		this.windowHeight = res.windowHeight;
+		this.statusBarHeight = res.statusBarHeight
 	},
 	/**
 	 * 监听页面初次渲染完成，如果渲染速度快，会在页面计入动画完成前触发
