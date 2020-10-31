@@ -41,19 +41,19 @@ export default {
 		};
 	},
 	onLoad() {
-		let res = uni.getSystemInfoSync()
-		this.statusBarHeight = res.statusBarHeight
+		let res = uni.getSystemInfoSync();
+		this.statusBarHeight = res.statusBarHeight;
 	},
 	methods: {}
 };
 </script>
 
 <style scoped>
-	.top {
-		width: 750rpx;
-		height: 260rpx;
-		background-image: url(../../static/62.jpg);
-		background-size: cover;
-		background-image: linear-gradient(to right, #BA7ACE 0%, #8745FF 100%);
-	}
+.top {
+	width: 750rpx;
+	height: 260rpx;
+	background-image: url(../../static/62.jpg);
+	background-size: cover;
+	background-image: linear-gradient(to right, #ba7ace 0%, #8745ff 100%);
+}
 </style>

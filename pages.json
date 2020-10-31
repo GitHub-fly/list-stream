@@ -8,39 +8,48 @@
 					"titleNView": false
 				}
 			}
+		},
+		{
+			"path": "pages/live/live",
+			"style": {
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#000000",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
+		},
+		{
+			"path": "pages/my/my",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationBarTextStyle": "white",
+				"backgroundColor": "#FFFFFF",
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		},
+		{
+			"path": "pages/coin/coin",
+			"style": {
+				"navigationBarTitleText": "我的余额",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black"
+			}
+
+		},
+		{
+			"path": "pages/create-live/create-live",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+
 		}
-	    ,{
-            "path": "pages/live/live",
-            "style": {
-            	"navigationBarTextStyle": "white",
-            	"backgroundColor": "#000000",
-            	"app-plus": {
-            		"titleNView": false
-            	}
-    		}
-            
-        }
-        ,{
-            "path": "pages/my/my",
-            "style": {
-            	"navigationBarTitleText": "我的",
-            	"navigationBarTextStyle": "white",
-            	"backgroundColor": "#FFFFFF",
-            	"app-plus": {
-            		"titleNView": false
-            	}
-            } 
-        }
-        ,{
-            "path": "pages/coin/coin",
-            "style": {
-            	"navigationBarTitleText": "我的余额",
-            	"navigationBarBackgroundColor": "#FFFFFF",
-            	"navigationBarTextStyle": "black"
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "直播"
