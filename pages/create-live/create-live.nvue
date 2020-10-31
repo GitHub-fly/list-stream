@@ -39,7 +39,11 @@
 			</view>
 
 			<view class="position-absolute right-0 flex flex-column" style="width: 100rpx;">
-				<view class="flex flex-column align-center justify-center" style="height: 120rpx;width: 100rpx;">
+				<view
+					class="flex flex-column align-center justify-center"
+					style="height: 120rpx;width: 100rpx;"
+					@click="switchCamera"
+				>
 					<text class="iconfont text-white mb-1">&#xe605;</text>
 					<text class="text-white font">翻转</text>
 				</view>
@@ -95,7 +99,7 @@ export default {
 	onLoad() {
 		let res = uni.getSystemInfoSync();
 		this.windowHeight = res.windowHeight;
-		this.statusBarHeight = res.statusBarHeight
+		this.statusBarHeight = res.statusBarHeight;
 	},
 	/**
 	 * 监听页面初次渲染完成，如果渲染速度快，会在页面计入动画完成前触发
@@ -105,7 +109,19 @@ export default {
 		this.startPreview();
 	},
 	methods: {
-		// 开启预览
+		/**
+		 *
+		 */
+		switchCamera() {
+			this.context.switchCamera({
+				success: e => {
+					this.position = this.position === 'back' ? 'front' : 'back';
+				}
+			});
+		},
+		/**
+		 * 开启预览
+		 */
 		startPreview() {
 			this.context.startPreview({
 				success: e => {
@@ -114,17 +130,25 @@ export default {
 			});
 		},
 
-		// 直播状态的变化
+		/**
+		 * 直播状态的变化
+		 * @param {Object} e
+		 */
 		statechange(e) {
 			console.log(e);
 		},
 
-		// 直播网络的变化
+		/**
+		 * 直播网络的变化
+		 * @param {Object} e
+		 */
 		netstatus(e) {
 			console.log(e);
 		},
 
-		// 直播出错
+		/**
+		 * 直播出错
+		 */
 		error() {
 			console.log(e);
 		}
