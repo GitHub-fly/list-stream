@@ -1,5 +1,3 @@
-/* eslint valid-jsdoc: "off" */
-
 'use strict'
 
 /**
@@ -16,11 +14,16 @@ module.exports = (appInfo) => {
     config.keys = appInfo.name + '_1604217576839_2026'
 
     // add your middleware config here
-    config.middleware = []
+    config.middleware = ['auth', 'errorHandler']
 
     // add your user config here
     const userConfig = {
         // myAppName: 'egg',
+    }
+
+    // 这些断点的请求需要 token 鉴权
+    config.auth = {
+        match: ['/logout', '/upload', '/getSize', '/file', '/share'],
     }
 
     config.security = {
