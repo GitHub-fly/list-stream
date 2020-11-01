@@ -15,7 +15,10 @@ module.exports = (appInfo) => {
     config.keys = appInfo.name + '_1604158088886_8645'
 
     // add your middleware config here
-    config.middleware = ['errorHandler']
+    config.middleware = ['errorHandler', 'auth']
+    config.auth = {
+        match: ['/api/live/create'],
+    }
 
     // add your user config here
     const userConfig = {
@@ -31,7 +34,7 @@ module.exports = (appInfo) => {
             },
         },
         // 跨域白名单
-        domainWhiteList: ['http://localhost:3000'],
+        // domainWhiteList: ['http://localhost:3000'],
     }
     // 允许跨域的方法
     config.cors = {
@@ -83,6 +86,26 @@ module.exports = (appInfo) => {
             host: '127.0.0.1', // Redis host
             password: '',
             db: 0,
+        },
+    }
+
+    // 流媒体配置
+    config.mediaServer = {
+        rtmp: {
+            port: 23480,
+            chunk_size: 60000,
+            gop_cache: true,
+            ping: 30,
+            ping_timeout: 60,
+        },
+        http: {
+            port: 23481,
+            allow_origin: '*',
+        },
+        auth: {
+            play: true,
+            publish: true,
+            secret: 'nodemedia2017privatekey',
         },
     }
 
