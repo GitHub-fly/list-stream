@@ -1,30 +1,44 @@
 /* eslint valid-jsdoc: "off" */
 
-'use strict';
+'use strict'
 
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
-module.exports = appInfo => {
-  /**
-   * built-in config
-   * @type {Egg.EggAppConfig}
-   **/
-  const config = exports = {};
+module.exports = (appInfo) => {
+    /**
+     * built-in config
+     * @type {Egg.EggAppConfig}
+     **/
+    const config = (exports = {})
 
-  // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1604217576839_2026';
+    // use for cookie sign key, should change to your own and keep security
+    config.keys = appInfo.name + '_1604217576839_2026'
 
-  // add your middleware config here
-  config.middleware = [];
+    // add your middleware config here
+    config.middleware = []
 
-  // add your user config here
-  const userConfig = {
-    // myAppName: 'egg',
-  };
+    // add your user config here
+    const userConfig = {
+        // myAppName: 'egg',
+    }
 
-  return {
-    ...config,
-    ...userConfig,
-  };
-};
+    config.security = {
+        // 关闭 csrf
+        csrf: {
+            enable: false,
+        },
+        // 跨域白名单
+        domainWhiteList: ['http://localhost:3000'],
+    }
+    // 允许跨域的方法
+    config.cors = {
+        origin: '*',
+        allowMethods: 'GET, PUT, POST, DELETE, PATCH',
+    }
+
+    return {
+        ...config,
+        ...userConfig,
+    }
+}
