@@ -4,6 +4,7 @@
 /**
  * @param {Egg.EggAppInfo} appInfo app info
  */
+const NodeMediaServer = require('node-media-server')
 module.exports = (appInfo) => {
     /**
      * built-in config
@@ -108,6 +109,8 @@ module.exports = (appInfo) => {
             secret: 'nodemedia2017privatekey',
         },
     }
+    var nms = new NodeMediaServer(config.mediaServer)
+    nms.run()
 
     return {
         ...config,
