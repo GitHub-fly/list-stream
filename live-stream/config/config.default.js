@@ -31,7 +31,7 @@ module.exports = (appInfo) => {
             },
         },
         // 跨域白名单
-        // domainWhiteList: ['http://localhost:3000'],
+        domainWhiteList: ['http://localhost:3000'],
     }
     // 允许跨域的方法
     config.cors = {
@@ -82,7 +82,7 @@ module.exports = (appInfo) => {
             port: 6379, // Redis port
             host: '127.0.0.1', // Redis host
             password: '',
-            db: 2,
+            db: 0,
         },
     }
 
