@@ -26,6 +26,7 @@
 		<f-list-item icon="iconzhengzaizhibo" title="我的直播"><text class="text-muted font">0</text></f-list-item>
 		<f-list-item icon="iconfaxian" title="我的关注"><text class="text-muted font">0</text></f-list-item>
 		<f-list-item icon="iconmore" title="历史记录"></f-list-item>
+		<f-list-item icon="iconmore" title="退出登录" @click="logout()"></f-list-item>
 	</view>
 </template>
 
@@ -44,7 +45,17 @@ export default {
 		let res = uni.getSystemInfoSync();
 		this.statusBarHeight = res.statusBarHeight;
 	},
-	methods: {}
+	methods: {
+		logout() {
+			// 调用 Vuex 的 logout，不需要直接在这里调用接口，在 Vuex 里异步调用即可
+			this.$store.dispatch('logout').then(res => {
+				uni.showToast({
+					title: '退 出 成 功',
+					icon: 'none'
+				});
+			});
+		}
+	}
 };
 </script>
 

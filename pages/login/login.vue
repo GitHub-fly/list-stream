@@ -48,19 +48,38 @@ export default {
 		return {
 			type: 'login',
 			form: {
-				username: '',
-				password: '',
+				username: 'xiaokaixin',
+				password: '123123',
 				repassword: ''
 			}
 		};
 	},
 	methods: {
 		changeType() {
-			this.type = this.type === 'login' ? 'red' : 'login';
+			this.type = this.type === 'login' ? 'reg' : 'login';
 		},
 		submit() {
-			uni.switchTab({
-				url: '../index/index'
+			let msg = this.type === 'login' ? '登录' : '注册';
+			this.$H.post('/' + this.type, this.form).then(res => {
+				console.log(res);
+				uni.showToast({
+					title: msg + '成功',
+					icon: 'none'
+				});
+				if (this.type === 'reg') {
+					this, changeType();
+					this.form = {
+						username: '',
+						password: '',
+						repassword: ''
+					};
+				} else {
+					
+					this.$store.dispatch('login', res);
+					uni.switchTab({
+						url: '../index/index'
+					})
+				 }
 			});
 		}
 	}
