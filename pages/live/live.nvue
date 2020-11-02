@@ -52,7 +52,7 @@
 		<!-- 中间视频区域 -->
 		<!-- :style="'margin-top:' + (460 + statusBarHeight) + 'rpx'" -->
 		<view style="height: 400rpx;">
-			<video class="flex-1" src="http://ivi.bupt.edu.cn/hls/btv2hd.m3u8" autoplay :controls="false"></video>
+			<video class="flex-1" :src="url" autoplay :controls="false"></video>
 		</view>
 
 		<!-- 弹幕区 -->
@@ -166,13 +166,16 @@ export default {
 			statusBarHeight: 0,
 			content: '',
 			gitfs: [],
-			giftActiveId: 0
+			giftActiveId: 0,
+			url: ''
 		};
 	},
-	onLoad() {
+	onLoad(option) {
 		let res = uni.getSystemInfoSync();
 		this.statusBarHeight = res.statusBarHeight;
 		this.gifts = myGifts;
+		this.url = option.url
+		console.log(this.url);
 	},
 	methods: {
 		openGift() {
