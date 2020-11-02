@@ -18,4 +18,6 @@ module.exports = (app) => {
     router.post('/api/user/info', controller.api.user.info)
     // 修改直播间状态
     router.post('/api/live/changestatus', controller.api.live.changeStatus)
+    // 直播间列表
+    router.post('/api/live/list/:page', controller.api.live.list)
 }
