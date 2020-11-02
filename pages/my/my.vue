@@ -83,9 +83,12 @@ export default {
 		logout() {
 			// 调用 Vuex 的 logout，不需要直接在这里调用接口，在 Vuex 里异步调用即可
 			this.$store.dispatch('logout').then(res => {
-				uni.showToast({
-					title: '退 出 成 功',
-					icon: 'none'
+				// uni.showToast({
+				// 	title: '退 出 成 功',
+				// 	icon: 'none'
+				// });
+				uni.navigateBack({
+					delta: 1
 				});
 			});
 		}
