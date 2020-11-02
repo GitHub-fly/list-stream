@@ -19,5 +19,7 @@ module.exports = (app) => {
     // 修改直播间状态
     router.post('/api/live/changestatus', controller.api.live.changeStatus)
     // 直播间列表
-    router.post('/api/live/list/:page', controller.api.live.list)
+    router.get('/api/live/list/:page', controller.api.live.list)
+    // 查看指定直播间
+    router.get('/api/live/read/:id', controller.api.live.read)
 }
