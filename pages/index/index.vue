@@ -6,7 +6,7 @@
 			:autoplay="true"
 			:interval="3000"
 			:duration="200"
-			style="width: 750rpx; height: 250rpx;"
+			style="width: 100%; height: 250rpx;"
 		>
 			<swiper-item>
 				<image src="../../static/banner/1.jpg" style="width: 750rpx;height: 750rpx;"></image>
@@ -15,78 +15,84 @@
 				<image src="../../static/banner/2.jpg" style="width: 750rpx;height: 750rpx;"></image>
 			</swiper-item>
 		</swiper>
+		<!-- 搜索框 -->
+		<view class="top flex-center">
+			<input
+				type="text"
+				style="width: 600rpx; height: 70rpx; background-color: #eeeeee;"
+				class="rounded-circle mx-1 pl-5"
+				placeholder="搜索直播间"
+				placeholder-style="color: #616161"
+			/>
+		</view>
 		<!-- 列表 -->
-		<view class="flex flex-wrap pl-1">
-			<f-list v-for="(item, index) in list" :key="index" :item="item" @click="openLive(item)"></f-list>
+		<view class="flex flex-wrap">
+			<view class="list-item" v-for="(item, index) in list" :key="index">
+				<f-card :item="item" :index="index" @click="openLive(item)"></f-card>
+			</view>
+		</view>
+		<view class="f-divider"></view>
+		<view class="flex-center py-3">
+			<text class="font-md text-secondary">{{ loadText }}</text>
 		</view>
 	</view>
 </template>
 
 <script>
-import fList from '../../components/common/f-list.vue';
+import fCard from '../../components/common/f-card.vue';
 export default {
 	data() {
 		return {
-			list: [
-				{
-					background: 'https://wx4.sinaimg.cn/mw690/006n20AVly1ge98rz9h4bj32003001l6.jpg',
-					url:
-						'http://xun-live-stream.utools.club/live/9gfTHnTN2F9GuUKOSt8k.flv?sign=1604333444-f4652ad819642ad378b52b454c23399b',
-					money: 124,
-					isEnd: false,
-					pNumber: 875,
-					title: '木轮'
-				},
-				{
-					background: 'https://wx4.sinaimg.cn/mw690/006n20AVly1ge98sdw9hgj31bf1z4kix.jpg',
-					money: 134,
-					isEnd: true,
-					pNumber: 398,
-					title: '光阴'
-				},
-				{
-					background: 'https://wx2.sinaimg.cn/mw690/006n20AVly1ge98sa8lr3j32003007wm.jpg',
-					money: 860,
-					isEnd: true,
-					pNumber: 975,
-					title: 'draw'
-				},
-				{
-					background: 'https://wx1.sinaimg.cn/mw690/00669kenly1gecl5h52h7j30zj1pttz1.jpg',
-					money: 423,
-					isEnd: true,
-					pNumber: 984,
-					title: '屋顶'
-				},
-				{
-					background: 'https://wx1.sinaimg.cn/mw690/00669kenly1gecl5vrvr6j32003004qr.jpg',
-					money: 397,
-					isEnd: false,
-					pNumber: 127,
-					title: '天体'
-				},
-				{
-					background: 'https://wx3.sinaimg.cn/mw690/00669kenly1gecla0xde7j3200300x6q.jpg',
-					money: 358,
-					isEnd: false,
-					pNumber: 279,
-					title: '云~'
-				},
-				{
-					background: 'https://wx3.sinaimg.cn/mw690/00669kenly1gecla0xde7j3200300x6q.jpg',
-					money: 358,
-					isEnd: false,
-					pNumber: 279,
-					title: '云~'
-				}
-			]
+			list: [],
+			page: 1,
+			loadText: '上拉加载更多'
 		};
 	},
 	onLoad() {},
 	components: {
-		fList
+		fCard
+	},
+	onLoad() {
+		this.getData();
+	},
+	onPullDownRefresh() {
+		this.page = 1;
+		this.getData()
+			.then(res => {
+				uni.showToast({
+					title: '刷新成功',
+					icon: 'none'
+				});
+				uni.stopPullDownRefresh();
+			})
+			.catch(err => {
+				uni.stopPullDownRefresh(); 
+			});
+	},
+	onReachBottom() {
+		if (this.loadText !== '上拉加载更多') {
+			return;
+		}
+		this.loadText = '加载中...';
+		this.page++;
+		this.getData();
 	},
 	methods: {
+		getData() {
+			let page = this.page;
+			return this.$H
+				.get('/live/list/' + page)
+				.then(res => {
+					this.list = page === 1 ? res : [...this.list, ...res];
+					this.loadText = res.length < 6 ? '没有更多了' : '上拉加载更多';
+				})
+				.catch(err => {
+					if (this.page > 1) {
+						this.page--;
+						this.loadText = '上拉加载更多';
+					}
+				});
+		},
 		openLive(item) {
 			uni.navigateTo({
 				url: `../live/live?url=${item.url}`
@@ -96,4 +102,18 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.top {
+	width: 100%;
+	height: 150rpx;
+	/* background-image: url(../); */
+	background-size: cover;
+	/* background-image: linear-gradient(to right, #ba7ace 0%, #8745ff 100%); */
+}
+.list-item {
+	width: 375rpx;
+	height: 375rpx;
+	padding: 5rpx;
+	position: relative;
+}
+</style>
