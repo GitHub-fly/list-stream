@@ -93,8 +93,6 @@ class UserController extends Controller {
 
         user = JSON.parse(JSON.stringify(user))
 
-        console.log(user)
-
         // 生成token
         user.token = ctx.getToken(user)
         delete user.password
@@ -104,6 +102,67 @@ class UserController extends Controller {
             ctx.throw(400, '登录失败')
         }
 
+        ctx.apiSuccess(user)
+    }
+
+    /**
+     * 第三方登录
+     */
+    async otherLogin() {
+        //获取上下文
+        let { ctx, app } = this
+        //验证数据
+        ctx.validate({
+            username: {
+                type: 'string',
+                required: true,
+                range: {
+                    min: 5,
+                    max: 20,
+                },
+                desc: '用户名',
+            },
+            password: {
+                type: 'string',
+                // 默认密码 123123
+                defValue: '123123',
+                required: false,
+                desc: '密码',
+            },
+            avatar: {
+                type: 'string',
+                required: true,
+                desc: '头像',
+            },
+        })
+
+        let { username, password, avatar } = ctx.request.body
+
+        // 验证用户是否已经存在
+        let user = await app.model.User.findOne({
+            where: {
+                username,
+            },
+        })
+        if (!user) {
+            user = await app.model.User.create({
+                username,
+                password,
+                avatar,
+            })
+            if (!user) {
+                ctx.throw(400, '创建用户失败')
+            }
+        }
+        user = JSON.parse(JSON.stringify(user))
+        // 生成token
+        user.token = ctx.getToken(user)
+        delete user.password
+
+        // 加入到存储中
+        if (!(await this.service.cache.set('user_' + user.id, user.token))) {
+            ctx.throw(400, '登录失败')
+        }
         ctx.apiSuccess(user)
     }
 
