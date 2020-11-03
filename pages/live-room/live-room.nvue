@@ -65,7 +65,14 @@
 			</view>
 			<!-- 收到礼物 -->
 			<f-gift ref="gift"></f-gift>
+			
+			<view>
+				<button @click="startLive">开始推流（开始直播）</button>
+				<button @click="stopLive">结束推流</button>
+			</view>
 		</view>
+		
+		
 		<!-- 弹幕 -->
 		<f-danmu ref="danmu"></f-danmu>
 
@@ -164,7 +171,7 @@ export default {
 			gifts: [],
 			giftActiveId: 0,
 			// 直播服务器地址，暂空
-			url: '',
+			url: 'rtmp://120.25.149.156:1935/live/exp',
 			// 标清模式
 			mode: 'SD',
 			// 是否启用摄像头
@@ -311,6 +318,23 @@ export default {
 		},
 		handleSliderChange(e) {
 			this[this.popupType] = e.detail.value;
+		},
+		EnableCamera() {
+			this.enableCamera = true;
+		},
+		startLive() {
+			this.context.start({
+				success: a => {
+					console.log('livePusher.start:' + JSON.stringify(a));
+				}
+			});
+		},
+		stopLive() {
+			this.context.stop({
+				success: a => {
+					console.log(JSON.stringify(a));
+				}
+			});
 		}
 	},
 	onLoad(e) {
