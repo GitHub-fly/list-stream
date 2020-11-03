@@ -22,9 +22,15 @@ class LiveController extends Controller {
                 type: 'string',
                 desc: '直播间封面',
             },
+            status: {
+                required: false,
+                type: 'int',
+                defValue: 1,
+                desc: '直播间状态',
+            },
         })
 
-        let { title, cover } = ctx.request.body
+        let { title, cover, status } = ctx.request.body
 
         // 生成唯一id
         let key = ctx.randomString(20)
@@ -34,6 +40,7 @@ class LiveController extends Controller {
             cover,
             key,
             user_id,
+            status,
         })
 
         // 生成签名
@@ -111,7 +118,7 @@ class LiveController extends Controller {
             },
         })
         let page = ctx.params.page
-        let limit = 10
+        let limit = 6
         let offset = (page - 1) * limit
         let rows = await app.model.Live.findAll({
             limit,
@@ -155,7 +162,7 @@ class LiveController extends Controller {
         }
         ctx.apiSuccess({
             data: live,
-            sign
+            sign,
         })
     }
 }

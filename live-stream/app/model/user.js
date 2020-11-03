@@ -1,6 +1,7 @@
 'use strict'
 
 const crypto = require('crypto')
+const { stringify } = require('querystring')
 module.exports = (app) => {
     const { INTEGER, STRING, DATE, ENUM, TEXT } = app.Sequelize
 
@@ -9,6 +10,34 @@ module.exports = (app) => {
             type: INTEGER(20),
             primaryKey: true,
             autoIncrement: true,
+        },
+        wxid: {
+            type: stringify(255),
+            allowNull: true,
+            defaultValue: '',
+            comment: '微信openId',
+            unique: true,
+        },
+        qqid: {
+            type: String(255),
+            allowNull: true,
+            defaultValue: '',
+            comment: 'QQopenId',
+            unique: true,
+        },
+        wbid: {
+            type: String(255),
+            allowNull: true,
+            defaultValue: '',
+            comment: '微博openId',
+            unique: true,
+        },
+        phone: {
+            type: String(11),
+            allowNull: true,
+            defaultValue: '',
+            comment: '手机号',
+            unique: true,
         },
         username: {
             type: STRING(30),
