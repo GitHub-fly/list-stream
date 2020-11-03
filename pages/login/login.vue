@@ -112,7 +112,10 @@ export default {
 				'../../static/banner/qq.png',
 				'../../static/banner/weibo.png'
 			],
-			otherLoginType: '',
+			otherLoginType: {
+				type: '',
+				openId: ''
+			},
 			statusBarHeight: ''
 		};
 	},
@@ -144,13 +147,16 @@ export default {
 		otherLogin(i) {
 			switch (i) {
 				case 0:
-					this.otherLoginType = 'weixin';
+					this.otherLoginType.type = 'weixin';
+					this.otherLoginType.openId = 'wxid';
 					break;
 				case 1:
-					this.otherLoginType = 'qq';
+					this.otherLoginType.type = 'qq';
+					this.otherLoginType.openId = 'qqid';
 					break;
 				case 2:
-					this.otherLoginType = 'sinaweibo';
+					this.otherLoginType.type = 'sinaweibo';
+					this.otherLoginType.openId = 'wbid';
 					break;
 			}
 			console.log('>>>>>>>>>>>' + this.otherLoginType + '登录' + '<<<<<<<<<<<<<');
@@ -159,24 +165,25 @@ export default {
 
 		/**
 		 * 第三方登录
-		 * @param {Object} type
+		 * @param {Object} obj
 		 */
-		appLogin(type) {
+		appLogin(obj) {
 			// 不同第三方登录，只需要更改 provider 的值即可
 			uni.login({
-				provider: type,
+				provider: obj.type,
 				success: loginRes => {
 					uni.getUserInfo({
-						provider: type,
+						provider: obj.type,
 						success: infoRes => {
 							// 统一的登录请求参数
 							console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>请求得到的数据：');
 							console.log(infoRes);
-							// this.loginDTO.openId = infoRes.userInfo.openId;
 							let user = {
+								[obj.openId]: infoRes.userInfo.openId,
 								username: infoRes.userInfo.nickName,
 								avatar: infoRes.userInfo.avatarUrl
 							};
+							console.log(user);
 							//统一调用登录方法
 							this.userLogin(user);
 						},
@@ -274,15 +281,26 @@ export default {
 			this.type = this.type === 'login' ? 'reg' : 'login';
 		},
 		submit() {
-			this.$H.post('/login', this.form).then(res => {
-				this.$store.dispatch('login', res);
-				uni.showToast({
-					title: '登录成功',
-					icon: 'none'
+			if (this.loginType === 'phone') {
+				this.$H
+					.post('/phoneLogin', {
+						phone: this.form.username,
+						code: this.form.password
+					})
+					.then(res => {
+						this.$store.dispatch('login', res);
+					});
+			} else {
+				this.$H.post('/login', this.form).then(res => {
+					this.$store.dispatch('login', res);
 				});
-				uni.switchTab({
-					url: '../index/index'
-				});
+			}
+			uni.showToast({
+				title: '登录成功',
+				icon: 'none'
+			});
+			uni.switchTab({
+				url: '../index/index'
 			});
 		}
 	}
