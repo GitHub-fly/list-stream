@@ -52,7 +52,7 @@ export default {
 				...options,
 				success: (result) => {
 					// 返回原始数据
-					if (options.native) {
+					if (options.native) { 
 						return res(result);
 					}
 					// 服务端失败

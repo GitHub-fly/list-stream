@@ -1,9 +1,6 @@
 <template>
 	<view class="container">
-		<text
-			class="iconfont iconguanbi ml-4"
-			@click="closePage()"
-		></text>
+		<text class="iconfont iconguanbi ml-4" @click="closePage()"></text>
 		<view class="flex-center" style="height: 350rpx;">
 			<text class="text-light" style="font-size: 50rpx">
 				{{ this.loginType === 'phone' ? '手机验证码' : '账号密码' }}登录
@@ -13,7 +10,7 @@
 			<view class="flex align-center">
 				<text v-show="loginType === 'phone'" class="font-weight-bold">+86</text>
 				<input
-					type="number"
+					type="text"
 					v-model="form.username"
 					class="px-2 font rounded input text-dark w-100"
 					:placeholder="loginType === 'phone' ? '手机号' : '昵称/手机号/邮箱'"
@@ -75,7 +72,7 @@
 			<image
 				v-for="(item, index) in otherLoginList"
 				:key="index"
-				style="width: 110rpx; height: 110rpx;"
+				style="width: 100rpx; height: 110rpx;"
 				class="rounded-circle ml-5 mr-5"
 				:src="item"
 				@click="otherLogin(index)"
@@ -168,18 +165,13 @@ export default {
 							// 统一的登录请求参数
 							console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>请求得到的数据：');
 							console.log(infoRes);
-							/**
-							 *
-							 *
-							 * 二、此处，后面根据接口的设计自行修改即可
-							 *
-							 *
-							 */
 							// this.loginDTO.openId = infoRes.userInfo.openId;
-							// this.loginDTO.nickName = infoRes.userInfo.nickName;
-							// this.loginDTO.avatarUrl = infoRes.userInfo.avatarUrl;
+							let user = {
+								username: infoRes.userInfo.nickName,
+								avatar: infoRes.userInfo.avatarUrl
+							};
 							//统一调用登录方法
-							this.userLogin();
+							this.userLogin(user);
 						},
 						fail() {
 							console.log('请求失败');
@@ -193,25 +185,33 @@ export default {
 		 * 统一登录的方法
 		 * @param {Object} loginDTO
 		 */
-		async userLogin() {
+		async userLogin(user) {
 			uni.showLoading({
 				title: '登录中'
 			});
 			/**
 			 * 此处调用第三方登录接口
 			 */
-			setTimeout(() => {
-				uni.switchTab({
-					url: '../index/index'
-				});
-				uni.hideLoading();
-			}, 2000);
-			// if (res.succ === true) {
-			// 	uni.showToast({
-			// 		title: '登录成功'
-			// 	});
-			// }
-			console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>接口返回得到的数据：');
+			this.$H.post('/otherlogin', user).then(res => {
+				if (res.id) {
+					this.$store.dispatch('login', res);
+					uni.showToast({
+						title: '登录成功'
+					});
+					setTimeout(() => {
+						uni.switchTab({
+							url: '../index/index'
+						});
+						uni.hideLoading();
+					}, 2000);
+				} else {
+					uni.showToast({
+						title: '登录失败'
+					});
+				}
+				console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>接口返回得到的数据：');
+				console.log(res);
+			});
 		},
 
 		/**
