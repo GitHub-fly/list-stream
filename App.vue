@@ -11,10 +11,10 @@ export default {
 		uni.onTabBarMidButtonTap(() => {
 			this.authJump({
 				url: '/pages/create-live/create-live'
-			})
+			});
 			console.log('点击了中间按钮');
 		});
-		this.$store.dispatch('initUser')
+		this.$store.dispatch('initUser');
 	},
 	onShow: function() {
 		console.log('App Show');
@@ -31,7 +31,4 @@ export default {
 /* #ifndef APP-PLUS-NVUE */
 @import url('/common/icon.css');
 /* #endif */
-*{
-	box-sizing: border-box;
-}
 </style>

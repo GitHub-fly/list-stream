@@ -28,7 +28,7 @@
 		<!-- 列表 -->
 		<view class="flex flex-wrap">
 			<view class="list-item" v-for="(item, index) in list" :key="index">
-				<f-card :item="item" :index="index" @click="openLive(item)"></f-card>
+				<f-card :item="item" :index="index" @click="openLive(item.id)"></f-card>
 			</view>
 		</view>
 		<view class="f-divider"></view>
@@ -93,9 +93,9 @@ export default {
 					}
 				});
 		},
-		openLive(item) {
+		openLive(id) {
 			uni.navigateTo({
-				url: `../live/live?url=${item.url}`
+				url: `../live/live?id=${id}`
 			});
 		}
 	}
@@ -114,6 +114,7 @@ export default {
 	width: 375rpx;
 	height: 375rpx;
 	padding: 5rpx;
+	box-sizing: border-box;
 	position: relative;
 }
 </style>

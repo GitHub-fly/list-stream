@@ -8,13 +8,13 @@
 				<!-- 主播 -->
 				<view class="flex-center">
 					<image
-						src="../../static/logo.png"
+						:src="user.avatar || '/static/logo.png'"
 						class="rounded-circle"
 						style="width: 70rpx; height: 70rpx;"
 					></image>
 					<view class="flex-column ml-1">
-						<text class="font-sm text-light">主播</text>
-						<text class="font-sm text-light">100</text>
+						<text class="font-sm text-light">{{ user.username }}</text>
+						<text class="font-sm text-light">{{ detail.look_count }}</text>
 					</view>
 				</view>
 				<!-- 一个 + 号 -->
@@ -33,7 +33,7 @@
 						</view>
 					</scroll-view>
 					<view class="rounded-circle bg-danger flex-center" style="width: 70rpx; height: 70rpx;">
-						<text class="font-sm text-light">100</text>
+						<text class="font-sm text-light">1000</text>
 					</view>
 				</view>
 			</view>
@@ -43,7 +43,7 @@
 				style="height: 80rpx; background-color: rgba(0, 0, 0, 0.4);"
 			>
 				<text class="font-lg text-warning">金币</text>
-				<text class="font-md text-light">100</text>
+				<text class="font-md text-light">{{ detail.coin }}</text>
 			</view>
 			<!-- 刷礼物区域 -->
 			<f-gift ref="gift"></f-gift>
@@ -51,7 +51,7 @@
 
 		<!-- 中间视频区域 -->
 		<!-- :style="'margin-top:' + (460 + statusBarHeight) + 'rpx'" -->
-		<view style="height: 400rpx;"><video class="flex-1" :src="url" autoplay :controls="false"></video></view>
+		<view style="height: 400rpx;"><video class="flex-1" :src="src" autoplay :controls="false"></video></view>
 
 		<!-- 弹幕区 -->
 		<f-danmu ref="danmu"></f-danmu>
@@ -138,6 +138,7 @@ import fGift from '../../components/live/f-gift.vue';
 import fDanmu from '../../components/live/f-danmu.vue';
 import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
 import myGifts from '../../common/gifts.js';
+import $H from '../../common/request.js';
 
 export default {
 	components: {
@@ -159,21 +160,43 @@ export default {
 			});
 		}, 3000);
 	},
+	computed: {
+		src() {
+			if (this.detail.key == '' || this.sign == '') {
+				return '';
+			}
+			console.log(`http://xun-live-stream.utools.club/live/${this.detail.key}.flv?sign=${this.sign}`);
+			return `http://xun-live-stream.utools.club/live/${this.detail.key}.flv?sign=${this.sign}`;
+		}
+	},
 	data() {
 		return {
+			id: 1,
+			key: '',
+			user: {
+				id: 0,
+				username: '',
+				avatar: '',
+			},
+			sign: '',
 			statusBarHeight: 0,
 			content: '',
 			gitfs: [],
 			giftActiveId: 0,
-			url: ''
+			detail: {}
 		};
 	},
 	onLoad(option) {
+		this.id = option.id;
 		let res = uni.getSystemInfoSync();
 		this.statusBarHeight = res.statusBarHeight;
 		this.gifts = myGifts;
-		this.url = option.url;
-		console.log(this.url);
+		// 请求后端接口，获得该直播间详情数据，包括主播信息，和直播间的签名数据
+		$H.get('/live/read/' + this.id).then(res => {
+			this.detail = res.data;
+			this.user = res.data.user
+			this.sign = res.sign;
+		});
 	},
 	methods: {
 		openGift() {
