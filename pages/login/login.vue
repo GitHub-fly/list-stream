@@ -1,87 +1,89 @@
 <template>
 	<view class="container">
-		<text class="iconfont iconguanbi ml-4" @click="closePage()"></text>
-		<view class="flex-center" style="height: 350rpx;">
-			<text class="text-light" style="font-size: 50rpx">
-				{{ this.loginType === 'phone' ? '手机验证码' : '账号密码' }}登录
-			</text>
-		</view>
-		<view class="px-4">
-			<view class="flex align-center">
-				<text v-show="loginType === 'phone'" class="font-weight-bold">+86</text>
-				<input
-					type="text"
-					v-model="form.username"
-					class="px-2 font rounded input text-dark w-100"
-					:placeholder="loginType === 'phone' ? '手机号' : '昵称/手机号/邮箱'"
-					placeholder-style="color: #212121"
-					style="height: 100rpx;"
-					@input="checkPhone()"
-				/>
+		<view :style="'margin-top:' + statusBarHeight + 'px'">
+			<text class="iconfont iconguanbi" @click="closePage()"></text>
+			<view class="flex-center" style="height: 350rpx;">
+				<text class="text-light" style="font-size: 50rpx">
+					{{ this.loginType === 'phone' ? '手机验证码' : '账号密码' }}登录
+				</text>
+			</view>
+			<view class="px-4">
+				<view class="flex align-center">
+					<text v-show="loginType === 'phone'" class="font-weight">+86</text>
+					<input
+						type="text"
+						v-model="form.username"
+						class="px-2 font rounded input text-dark w-100"
+						:placeholder="loginType === 'phone' ? '手机号' : '昵称/手机号/邮箱'"
+						placeholder-style="color: #212121"
+						style="height: 100rpx;"
+						@input="checkPhone()"
+					/>
+				</view>
+
+				<divider class="mb-2"></divider>
+
+				<view class="flex align-center justify-between text-dark">
+					<input
+						type="number"
+						v-model="form.password"
+						class="px-2 font rounded input col-7"
+						:placeholder="this.loginType === 'phone' ? '请输入验证码' : '请输入密码'"
+						placeholder-style="color: #212121"
+						style="height: 100rpx;"
+					/>
+					<button
+						v-if="loginType === 'phone'"
+						class="p-1 flex-center m-0"
+						:disabled="isBtn"
+						style="background-color: transparent; height: 60rpx; font-size: 25rpx; border: 1px solid #f1f2f6; color: #ffffff;"
+						@click="getCode()"
+					>
+						{{ codeMsg }}
+					</button>
+					<text v-else class="font-sm text-light-muted">忘记密码</text>
+				</view>
+				<divider></divider>
 			</view>
 
-			<divider class="mb-2"></divider>
-
-			<view class="flex align-center justify-between text-dark">
-				<input
-					type="number"
-					v-model="form.password"
-					class="px-2 font rounded input col-7"
-					:placeholder="this.loginType === 'phone' ? '请输入验证码' : '请输入密码'"
-					placeholder-style="color: #212121"
-					style="height: 100rpx;"
-				/>
-				<button
-					v-if="loginType === 'phone'"
-					class="p-1 flex-center m-0"
-					:disabled="isBtn"
-					style="background-color: #eeeeee; height: 60rpx; font-size: 25rpx;"
-					@click="getCode()"
+			<view class="p-3 flex-center mt-5" @click="submit">
+				<view
+					class="rounded p-3 flex-center flex-1 rounded-circle "
+					:class="form.password === '' ? 'gray' : 'bg-main'"
 				>
-					{{ codeMsg }}
-				</button>
-				<text v-else class="font-sm text-light-muted">忘记密码</text>
+					<text class="text-white font-md">登 录</text>
+				</view>
 			</view>
-			<divider></divider>
-		</view>
 
-		<view class="p-3 flex-center mt-5" @click="submit">
-			<view
-				class="rounded p-3 flex-center flex-1 rounded-circle "
-				:class="form.password === '' ? 'gray' : 'bg-main'"
-			>
-				<text class="text-white font-md">登 录</text>
+			<view class="flex-center mt-5">
+				<text class="font-sm" style="color: #2196f3;" @click="changeLoginType()">
+					{{ this.loginType !== 'phone' ? '验证码' : '账号密码' }}登录
+				</text>
+				<text class="ml-2 mr-2" style="color: #7e57c2;">|</text>
+				<text class="font-sm" style="color: #2196f3;">登录遇到问题</text>
 			</view>
-		</view>
 
-		<view class="flex-center mt-5">
-			<text class="font-sm" style="color: #0056B3;" @click="changeLoginType()">
-				{{ this.loginType !== 'phone' ? '验证码' : '账号密码' }}登录
-			</text>
-			<text class="ml-2 mr-2" style="color: #424242;">|</text>
-			<text class="font-sm" style="color: #0056B3;">登录遇到问题</text>
-		</view>
+			<view class="flex-center mt-4">
+				<view class="text-light-muted" style="height: 2rpx; width: 85rpx; background-color: #A9A5A0;"></view>
+				<text class="font-sm text-light-muted ml-1 mr-1">社交账号登录</text>
+				<view class="text-light-muted" style="height: 2rpx; width: 85rpx; background-color: #A9A5A0;"></view>
+			</view>
 
-		<view class="flex-center mt-4">
-			<view class="text-light-muted" style="height: 2rpx; width: 85rpx; background-color: #A9A5A0;"></view>
-			<text class="font-sm text-light-muted ml-1 mr-1">社交账号登录</text>
-			<view class="text-light-muted" style="height: 2rpx; width: 85rpx; background-color: #A9A5A0;"></view>
-		</view>
+			<view class="flex-center mt-4">
+				<image
+					v-for="(item, index) in otherLoginList"
+					:key="index"
+					style="width: 100rpx; height: 110rpx;"
+					class="rounded-circle ml-5 mr-5"
+					:src="item"
+					@click="otherLogin(index)"
+				></image>
+			</view>
 
-		<view class="flex-center mt-4">
-			<image
-				v-for="(item, index) in otherLoginList"
-				:key="index"
-				style="width: 100rpx; height: 110rpx;"
-				class="rounded-circle ml-5 mr-5"
-				:src="item"
-				@click="otherLogin(index)"
-			></image>
-		</view>
-
-		<view class="mt-4 flex-center">
-			<text class="text-light-muted font-sm">注册及代表您同意</text>
-			<text class="" style="color: #1890ff;">《XXX社区协议》</text>
+			<view class="mt-4 flex-center">
+				<text class="text-light-muted font-sm">注册及代表您同意</text>
+				<text class="" style="color: #448aff;">《XXX社区协议》</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -110,7 +112,8 @@ export default {
 				'../../static/banner/qq.png',
 				'../../static/banner/weibo.png'
 			],
-			otherLoginType: ''
+			otherLoginType: '',
+			statusBarHeight: ''
 		};
 	},
 	watch: {
@@ -127,6 +130,10 @@ export default {
 				this.timer = null;
 			}
 		}
+	},
+	onLoad() {
+		let res = uni.getSystemInfoSync();
+		this.statusBarHeight = res.statusBarHeight;
 	},
 	methods: {
 		/* 第三方登录操作 */
@@ -283,19 +290,24 @@ export default {
 </script>
 
 <style scoped>
+* {
+	box-sizing: border-box;
+}
 .container {
-	width: 750rpx;
-	height: 100vh;
-	margin: 0;
-	padding: 100rpx 0 0 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
 	background-size: cover;
 	background-image: linear-gradient(to bottom, #ba7ace 0%, #8745ff 100%);
 }
+
 .input {
 	border: none;
 	background-color: transparent;
 }
 .gray {
-	background-color: #f3e5f5;
+	background-color: #ba68c8;
 }
 </style>

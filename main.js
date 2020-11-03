@@ -9,6 +9,21 @@ Vue.prototype.$H = $H;
 import store from './store/index.js';
 Vue.prototype.$store = store;
 
+// 权限验证，必须登录后才能进入页面
+Vue.prototype.authJump = (options) => {
+	if (!store.state.token) {
+		uni.showToast({
+			title: '请先登录',
+			icon: 'none'
+		});
+		return uni.navigateTo({
+			url: '/pages/login/login.vue'
+		});
+	}
+	uni.navigateTo(options);
+};
+
+
 Vue.config.productionTip = false;
 
 App.mpType = 'app';

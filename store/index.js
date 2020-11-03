@@ -1,13 +1,28 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import $H from '../common/request.js';
 Vue.use(Vuex);
+
+import $H from '../common/request.js';
 export default new Vuex.Store({
 	state: {
 		user: null,
 		token: null
 	},
 	actions: {
+		authMethod({
+			state
+		}, callback) {
+			if (!state.token) {
+				uni.showToast({
+					title: '请先登录',
+					icon: 'none'
+				});
+				return uni.navigateTo({
+					url: '/pages/login/login'	
+				});
+			}
+			callback();
+		},
 		login({
 			state
 		}, user) {
