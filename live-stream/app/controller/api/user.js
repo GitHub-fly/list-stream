@@ -253,22 +253,21 @@ class UserController extends Controller {
                 phone,
             },
         })
-        //取出redis中的验证码
+
+        // 取出redis中的验证码
         let res = await service.cache.get('code')
-        console.log('redis中的code' + res.toString())
-        console.log('前端发送的code的值是' + code)
         if (res.toString() !== code.toString()) {
             ctx.throw(400, '验证码不正确')
         }
         // 如果查不到，直接注册写入新数据
         if (!user) {
-            // user = await app.model.User.create({
-            //   phone: phone,
-            //   password: '123123',
-            //   avatar: '',
-            //   coin: 0,
-            // })
-            ctx.throw(400, '该用户不存在')
+            user = await app.model.User.create({
+                phone: phone,
+                password: '123123',
+                avatar: '',
+                coin: 0,
+            })
+            // ctx.throw(400, '该用户不存在')
         }
         user = JSON.parse(JSON.stringify(user))
         console.log(user)

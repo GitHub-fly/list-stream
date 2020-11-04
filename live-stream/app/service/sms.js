@@ -4,8 +4,8 @@ const SMSClient = require('@alicloud/sms-sdk')
 const await = require('await-stream-ready/lib/await')
 
 const config = {
-    AccessKeyId: 'LTAI4G4j1GuS21gFVBoM4Njf', //阿里云key
-    AccessKeySecret: 'Ws0Vnbtwz1Q5fVCCbseZJ6eSEiBG3X', // 阿里云密钥
+    AccessKeyId: '*********', //阿里云key
+    AccessKeySecret: '**********', // 阿里云密钥
 }
 
 // 签名模板，注意修改
@@ -32,7 +32,7 @@ class SmsService extends Service {
         // 标注2：随机数生成方法，自己写一个即可
         const codeRandom = Math.random().toFixed(6).slice(-6)
         const templateParam = JSON.stringify({ code: codeRandom.toString() })
-        service.cache.set('code', codeRandom, 60 * 5)
+        service.cache.set('code', codeRandom, 60 * 10)
         const accessKeyId = config.AccessKeyId
         const secretAccessKey = config.AccessKeySecret
         const smsClient = new SMSClient({ accessKeyId, secretAccessKey })
