@@ -99,8 +99,8 @@ export default {
 			loginType: 'phone',
 			type: 'login',
 			form: {
-				username: '',
-				password: ''
+				username: '1885199738',
+				password: '405659'
 			},
 			isBtn: false,
 			codeMsg: '获取验证码',
@@ -241,36 +241,41 @@ export default {
 		 * 获取验证码
 		 */
 		getCode() {
-			if (!this.timer) {
-				this.timer = setInterval(() => {
-					if (this.countDown > 0 && this.countDown <= 60) {
-						this.isBtn = true;
-						this.countDown--;
-						if (this.countDown != 0) {
-							this.codeMsg = `重新发送(${this.countDown})`;
-						} else {
-							clearInterval(this.timer);
-							this.isBtn = false;
-							this.codeMsg = '获取验证码';
-							this.countDown = 60;
-							this.timer = null;
+			// this.checkPhone()
+			console.log(this.form.username);
+			this.$H.post('/sendcode', {
+				phone: this.form.username
+			}).then(res => {
+				if (!this.timer) {
+					this.timer = setInterval(() => {
+						if (this.countDown > 0 && this.countDown <= 60) {
+							this.isBtn = true;
+							this.countDown--;
+							if (this.countDown != 0) {
+								this.codeMsg = `重新发送(${this.countDown})`;
+							} else {
+								clearInterval(this.timer);
+								this.isBtn = false;
+								this.codeMsg = '获取验证码';
+								this.countDown = 60;
+								this.timer = null;
+							}
 						}
-					}
-				}, 1000);
-			}
+					}, 1000);
+				}
+			})
 		},
 		/**
 		 * 验证手机号码是否符合正常逻辑
 		 */
 		checkPhone() {
 			if (this.loginType === 'phone') {
-				var phone = this.form.username;
+				let phone = this.form.username;
 				if (!/^1[3456789]\d{9}$/.test(phone)) {
-					return '手机号格式错误';
-					// this.mobileTip = '手机号格式错误';
-				} else {
-					// this.mobilecode = true;
-					return '';
+					// return uni.showToast({
+					// 	title:'手机号填写错误',
+					// 	icon: 'none'
+					// });
 				}
 			}
 		},
