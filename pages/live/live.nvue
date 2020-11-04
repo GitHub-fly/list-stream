@@ -24,16 +24,16 @@
 				<!-- 观众 -->
 				<view class="col-6 flex">
 					<scroll-view scroll-x="true" class="flex flex-1" style="border-radius: 20%;">
-						<view class="p" v-for="(item, index) in 100" :key="index">
+						<view class="p" v-for="(item, index) in list" :key="index">
 							<image
 								class="rounded-circle"
-								src="../../static/banner/1.jpg"
+								:src="item.avatar || '/static/62.jpg'"
 								style="width: 70rpx; height: 70rpx;"
 							></image>
 						</view>
 					</scroll-view>
 					<view class="rounded-circle bg-danger flex-center" style="width: 70rpx; height: 70rpx;">
-						<text class="font-sm text-light">1000</text>
+						<text class="font-sm text-light">{{ list.length }}</text>
 					</view>
 				</view>
 			</view>
@@ -190,7 +190,9 @@ export default {
 			content: '',
 			gitfs: [],
 			giftActiveId: 0,
-			detail: {}
+			detail: {},
+			// 在线用户列表
+			list: []
 		};
 	},
 	onLoad(option) {
@@ -204,8 +206,22 @@ export default {
 			this.user = res.data.user;
 			this.sign = res.sign;
 		});
+		// 监听全局事件
+		uni.$on('live', this.handleLiveEvent);
 	},
 	methods: {
+		handleLiveEvent(e) {
+			let d = e.data;
+			switch (e.type) {
+				case 'online':
+					if (d.action === 'join') {
+						this.list = d.data;
+					}
+					break;
+				default:
+					break;
+			}
+		},
 		/**
 		 * 加入或离开直播间
 		 * @param {Object} type
