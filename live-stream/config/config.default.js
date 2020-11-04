@@ -123,6 +123,23 @@ module.exports = (appInfo) => {
     var nms = new NodeMediaServer(config.mediaServer)
     nms.run()
 
+    config.io = {
+        init: {
+            wsEngine: 'ws',
+        },
+        namespace: {
+            '/': {
+                connectionMiddleware: [],
+                packetMiddleware: [],
+            },
+        },
+        redis: {
+            host: '127.0.0.1',
+            port: 6379,
+            db: 1,
+        },
+    }
+
     return {
         ...config,
         ...userConfig,

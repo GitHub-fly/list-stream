@@ -4,8 +4,8 @@ const SMSClient = require('@alicloud/sms-sdk')
 const await = require('await-stream-ready/lib/await')
 
 const config = {
-    AccessKeyId: '*********', //阿里云key
-    AccessKeySecret: '**********', // 阿里云密钥
+    AccessKeyId: 'LTAI4G4j1GuS21gFVBoM4Njf', //阿里云key
+    AccessKeySecret: 'Ws0Vnbtwz1Q5fVCCbseZJ6eSEiBG3X', // 阿里云密钥
 }
 
 // 签名模板，注意修改
