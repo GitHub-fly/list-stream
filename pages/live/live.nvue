@@ -139,7 +139,8 @@ import fDanmu from '../../components/live/f-danmu.vue';
 import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
 import myGifts from '../../common/gifts.js';
 import $H from '../../common/request.js';
-
+import $C from '../../common/config.js';
+import { mapState } from 'vuex';
 export default {
 	components: {
 		fGift,
@@ -147,6 +148,8 @@ export default {
 		uniPopup
 	},
 	mounted() {
+		// 加入直播间
+		this.joinOrLeaveLive('join');
 		/**
 		 * 送礼物演示
 		 */
@@ -161,6 +164,10 @@ export default {
 		}, 3000);
 	},
 	computed: {
+		...mapState({
+			socket: state => state.socket,
+			token: state => state.token
+		}),
 		src() {
 			if (this.detail.key == '' || this.sign == '') {
 				return '';
@@ -176,7 +183,7 @@ export default {
 			user: {
 				id: 0,
 				username: '',
-				avatar: '',
+				avatar: ''
 			},
 			sign: '',
 			statusBarHeight: 0,
@@ -194,11 +201,23 @@ export default {
 		// 请求后端接口，获得该直播间详情数据，包括主播信息，和直播间的签名数据
 		$H.get('/live/read/' + this.id).then(res => {
 			this.detail = res.data;
-			this.user = res.data.user
+			this.user = res.data.user;
 			this.sign = res.sign;
 		});
 	},
 	methods: {
+		/**
+		 * 加入或离开直播间
+		 * @param {Object} type
+		 */
+		joinOrLeaveLive(type) {
+			if (this.socket && this.token) {
+				this.socket.emit(type + 'Live', {
+					live_id: this.id,
+					token: this.token
+				});
+			}
+		},
 		openGift() {
 			this.$refs.giftPopup.open();
 		},

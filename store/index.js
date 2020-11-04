@@ -3,12 +3,56 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 import $H from '../common/request.js';
+import $C from '../common/config.js';
+import io from '../common/uni-socket.io.js';
+
 export default new Vuex.Store({
 	state: {
 		user: null,
-		token: null
+		token: null,
+		socket: null
 	},
 	actions: {
+		/**
+		 * 连接 socket
+		 */
+		connectSocket({
+			state,
+			dispatch
+		}) {
+			const S = io($C.socketUrl, {
+				query: {},
+				transports: ['websocket'],
+				timeout: 5000
+			});
+			// 监听连接
+			S.on('connect', () => {
+				console.log('socket已连接');
+				state.socket = S;
+				// socket.io 唯一链接id，可以监控这个id实现点对点通讯
+				const {
+					id
+				} = S;
+				S.on(id, (e) => {
+					let d = e.data;
+					if (d.action === 'error') {
+						let msg = d.payload;
+						return uni.showToast({
+							title: msg,
+							icon: 'none'
+						});
+					}
+				});
+			});
+			// 监听失效
+			S.on('error', () => {
+				console.log('连接失败');
+			});
+			// 监听断开
+			S.on('disconnect', () => {
+				console.log('已断开');
+			});
+		},
 		authMethod({
 			state
 		}, callback) {
@@ -18,7 +62,7 @@ export default new Vuex.Store({
 					icon: 'none'
 				});
 				return uni.navigateTo({
-					url: '/pages/login/login'	
+					url: '/pages/login/login'
 				});
 			}
 			callback();
