@@ -99,8 +99,9 @@ export default {
 			loginType: 'phone',
 			type: 'login',
 			form: {
-				username: '1885199738',
-				password: '405659'
+				username: '18851999738',
+				// password: '405659'
+				password: '123123'
 			},
 			isBtn: false,
 			codeMsg: '获取验证码',

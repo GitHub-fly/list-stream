@@ -67,7 +67,7 @@
 				</view>
 				<view class="btn btn-icon bg-warning" @click="openGift"><text class="iconfont">&#xe67c;</text></view>
 				<view class="btn btn-icon"><text class="iconfont text-white">&#xe7cd;</text></view>
-				<view class="btn btn-icon"><text class="iconfont text-white">&#xe607;</text></view>
+				<view class="btn btn-icon" @click="back"><text class="iconfont text-white">&#xe607;</text></view>
 			</view>
 		</view>
 
@@ -163,6 +163,12 @@ export default {
 			});
 		}, 3000);
 	},
+	destroyed() {
+		// 离开直播间
+		this.joinOrLeaveLive('leave');
+		// 移除全局事件
+		uni.$off('live', this.handleLiveEvent);
+	},
 	computed: {
 		...mapState({
 			socket: state => state.socket,
@@ -210,6 +216,11 @@ export default {
 		uni.$on('live', this.handleLiveEvent);
 	},
 	methods: {
+		back() {
+			uni.navigateBack({
+				delta: 1
+			});
+		},
 		handleLiveEvent(e) {
 			let d = e.data;
 			switch (e.type) {
