@@ -48,7 +48,6 @@ export default {
 			loadText: '上拉加载更多'
 		};
 	},
-	onLoad() {},
 	components: {
 		fCard
 	},

@@ -3,7 +3,7 @@ export default {
 	common: {
 		// #ifndef H5
 		// baseUrl: 'http://127.0.0.1:7001/api',
-		baseUrl: 'http://knowledge.utools.club/api',
+		baseUrl: 'http://xun-uni-live.utools.club/api',
 		// #endif
 		// #ifdef H5
 		baseUrl: '/api',
@@ -52,7 +52,7 @@ export default {
 				...options,
 				success: (result) => {
 					// 返回原始数据
-					if (options.native) { 
+					if (options.native) {
 						return res(result);
 					}
 					// 服务端失败

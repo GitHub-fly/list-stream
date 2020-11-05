@@ -1,4 +1,4 @@
 export default {
-	baseUrl: 'http://knowledge.utools.club',
-	socketUrl: 'http://knowledge.utools.club'
+	baseUrl: 'http://xun-uni-live.utools.club',
+	socketUrl: 'http://xun-uni-live.utools.club'
 };
