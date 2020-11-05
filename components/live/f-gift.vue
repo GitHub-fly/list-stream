@@ -1,7 +1,7 @@
 <template>
 	<list style="width: 520rpx; height: 300rpx;" :show-scrollbar="false" :bounce="false">
 		<cell
-			class="flex align-center px-3 pt-3"
+			class="flex align-center pt-3"
 			v-for="(item, index) in gifts"
 			:key="index"
 			insert-animation="default"

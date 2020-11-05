@@ -137,7 +137,6 @@
 import fGift from '../../components/live/f-gift.vue';
 import fDanmu from '../../components/live/f-danmu.vue';
 import uniPopup from '../../components/uni-ui/uni-popup/uni-popup.vue';
-import myGifts from '../../common/gifts.js';
 import $H from '../../common/request.js';
 import $C from '../../common/config.js';
 import { mapState } from 'vuex';
@@ -150,18 +149,6 @@ export default {
 	mounted() {
 		// 加入直播间
 		this.joinOrLeaveLive('join');
-		/**
-		 * 送礼物演示
-		 */
-		setInterval(() => {
-			this.$refs.gift.send({
-				username: '发送人',
-				avatar: '',
-				gift_name: '蛋糕',
-				gift_image: '/static/gift/3.png',
-				num: 1
-			});
-		}, 3000);
 	},
 	destroyed() {
 		// 离开直播间
@@ -194,7 +181,7 @@ export default {
 			sign: '',
 			statusBarHeight: 0,
 			content: '',
-			gitfs: [],
+			gifts: [],
 			giftActiveId: 0,
 			detail: {},
 			// 在线用户列表
@@ -205,13 +192,22 @@ export default {
 		this.id = option.id;
 		let res = uni.getSystemInfoSync();
 		this.statusBarHeight = res.statusBarHeight;
-		this.gifts = myGifts;
+
 		// 请求后端接口，获得该直播间详情数据，包括主播信息，和直播间的签名数据
 		$H.get('/live/read/' + this.id).then(res => {
 			this.detail = res.data;
 			this.user = res.data.user;
 			this.sign = res.sign;
 		});
+
+		// 请求礼物列表接口
+		$H.get('/gift/list').then(res => {
+			this.gifts = res.map(item => {
+				item.image = $C.imgUrl + item.image;
+				return item;
+			});
+		});
+
 		// 监听全局事件
 		uni.$on('live', this.handleLiveEvent);
 	},
@@ -237,6 +233,21 @@ export default {
 					});
 					this.content = '';
 					this.$refs.input.close();
+					break;
+				case 'gift':
+					this.$refs.gift.send({
+						username: d.username,
+						avatar: d.avatar,
+						gift_name: d.gift_name,
+						gift_image: $C.imgUrl + d.gift_image,
+						num: d.num
+					});
+					// 请求后端接口，获得该直播间详情数据，包括主播信息，和直播间的签名数据
+					$H.get('/live/read/' + this.id).then(res => {
+						this.detail = res.data;
+						this.user = res.data.user;
+						this.sign = res.sign;
+					});
 					break;
 				default:
 					break;
@@ -272,13 +283,23 @@ export default {
 				return;
 			}
 			let g = this.gifts[index];
-			this.$refs.gift.send({
-				username: '小可爱',
-				avatar: '',
-				gift_name: g.name,
-				gift_image: g.image,
-				num: 10
-			});
+
+			if (!this.token && !this.socket) {
+				uni.navigateTo({
+					url: '../login/login'
+				});
+				return uni.showToast({
+					title: '请先登录',
+					icon: 'none'
+				});
+			}
+			if (this.socket) {
+				this.socket.emit('gift', {
+					live_id: this.id,
+					gift_id: g.id,
+					token: this.token
+				});
+			}
 			this.closeGift();
 		},
 		openCoin() {
@@ -326,12 +347,6 @@ export default {
 					token: this.token
 				});
 			}
-
-			// this.$refs.danmu.send({
-			// 	id: Math.random() * 100, // 随机生成一个id
-			// 	name: '小可爱',
-			// 	content: this.content
-			// });
 			this.content = '';
 			this.$refs.input.close();
 		},
