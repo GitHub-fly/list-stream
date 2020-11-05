@@ -54,7 +54,6 @@ class NspController extends Controller {
             socket.emit(id, ctx.helper.parseMsg('error', '用户不存在'))
             return false
         }
-
         return user
     }
     /**
@@ -94,7 +93,7 @@ class NspController extends Controller {
         list = list.filter((item) => item.id !== user.id)
         list.unshift({
             id: user.id,
-            name: user.name,
+            name: user.username,
             avatar: user.avatar,
         })
         console.log('>>>>>>>>>>>>>>>>>>>>>>list:')
@@ -194,6 +193,56 @@ class NspController extends Controller {
             service.cache.set('userList_' + room, list)
         }
         console.log(list)
+    }
+
+    /**
+     * 直播间发送弹幕
+     */
+    async comment() {
+        const { ctx, app, service, helper } = this
+        const nsp = app.io.of('/')
+        // 接受参数
+        const message = ctx.args[0] || {}
+
+        // 当前连接
+        const socket = ctx.socket
+        const id = socket.id
+
+        let { live_id, token, data } = message
+        if (!data) {
+            socket.emit(id, ctx.helper.parsMsg('error', '评论内容不能为空'))
+            return
+        }
+        // 验证用户 token
+        let user = await this.checkToken(token)
+        if (!user) {
+            return
+        }
+
+        // 验证当前直播间是否存在或是否处于直播中
+        let msg = await service.live.checkStatus(live_id)
+        if (msg) {
+            socket.emit(id, ctx.helper.parseMsg('error', msg))
+            return
+        }
+
+        const room = 'live_' + live_id
+        // 推送消息到直播间
+        nsp.to(room).emit('comment', {
+            user: {
+                id: user.id,
+                name: user.nickname || user.username,
+                avatar: user.avatar,
+            },
+            id: ctx.randomString(10),
+            content: data,
+        })
+        // 生成一条 comment 数据
+        app.model.Comment.create({
+            content: data,
+            live_id,
+            user_id: user.id,
+        })
     }
 }
 module.exports = NspController

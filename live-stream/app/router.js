@@ -31,4 +31,5 @@ module.exports = (app) => {
     // socket 路由配置测试
     io.of('/').route('joinLive', io.controller.nsp.joinLive)
     io.of('/').route('leaveLive', io.controller.nsp.leaveLive)
+    io.of('/').route('comment', io.controller.nsp.comment)
 }
