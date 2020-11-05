@@ -28,8 +28,10 @@ module.exports = (app) => {
     router.post('/api/phoneLogin', controller.api.user.phoneLogin)
     // 发送手机验证码
     router.post('/api/sendcode', controller.api.sms.sendCode)
+    router.get('/api/gift/list', controller.api.gift.list)
     // socket 路由配置测试
     io.of('/').route('joinLive', io.controller.nsp.joinLive)
     io.of('/').route('leaveLive', io.controller.nsp.leaveLive)
     io.of('/').route('comment', io.controller.nsp.comment)
+    io.of('/').route('gift', io.controller.nsp.gift)
 }
