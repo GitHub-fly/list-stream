@@ -30,7 +30,8 @@ module.exports = (app) => {
     router.post('/api/sendcode', controller.api.sms.sendCode)
     router.get('/api/gift/list', controller.api.gift.list)
     router.get('/test', controller.admin.test.page)
-    // socket 路由配置测试
+    router.get('/admin/manager/create', controller.admin.manager.create)
+    router.post('/admin/manager', controller.admin.manager.save)
     io.of('/').route('joinLive', io.controller.nsp.joinLive)
     io.of('/').route('leaveLive', io.controller.nsp.leaveLive)
     io.of('/').route('comment', io.controller.nsp.comment)
