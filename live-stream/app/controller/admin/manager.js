@@ -6,7 +6,7 @@ class ManagerController extends Controller {
     // 创建管理员表单
     async create() {
         const { ctx } = this
-        await ctx.render('manager/create.html')
+        await ctx.render('admin/manager/create.html')
     }
     // 创建管理员逻辑
     async save() {
@@ -43,6 +43,15 @@ class ManagerController extends Controller {
         })
 
         ctx.apiSuccess(manager)
+    }
+
+    // 管理员列表
+    async index() {
+        const { ctx, app } = this
+        let data = await ctx.page('Manager')
+        await ctx.render('admin/manager/index.html', {
+            data,
+        })
     }
 }
 
