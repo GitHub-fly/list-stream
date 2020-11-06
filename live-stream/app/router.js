@@ -29,6 +29,7 @@ module.exports = (app) => {
     // 发送手机验证码
     router.post('/api/sendcode', controller.api.sms.sendCode)
     router.get('/api/gift/list', controller.api.gift.list)
+    router.get('/test', controller.admin.test.page)
     // socket 路由配置测试
     io.of('/').route('joinLive', io.controller.nsp.joinLive)
     io.of('/').route('leaveLive', io.controller.nsp.leaveLive)

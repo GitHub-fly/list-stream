@@ -139,6 +139,12 @@ module.exports = (appInfo) => {
             db: 1,
         },
     }
+    
+    config.view = {
+        mapping: {
+            '.html': 'nunjucks',
+        },
+    }
 
     return {
         ...config,
