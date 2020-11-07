@@ -1,13 +1,11 @@
-/* eslint-disable no-unused-vars */
-'use strict'
+module.exports = app => {
+    const { STRING, INTEGER, DATE, ENUM, TEXT } = app.Sequelize;
 
-module.exports = (app) => {
-    const { INTEGER, STRING, DATE, ENUM, TEXT } = app.Sequelize
     const LiveGift = app.model.define('live_gift', {
         id: {
             type: INTEGER(20),
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         live_id: {
             type: INTEGER,
@@ -16,10 +14,10 @@ module.exports = (app) => {
             comment: '直播间id',
             references: {
                 model: 'live',
-                key: 'id',
+                key: 'id'
             },
             onDelete: 'cascade',
-            onUpdate: 'restrict',
+            onUpdate: 'restrict', // 更新时操作
         },
         user_id: {
             type: INTEGER,
@@ -28,10 +26,10 @@ module.exports = (app) => {
             comment: '用户id',
             references: {
                 model: 'user',
-                key: 'id',
+                key: 'id'
             },
             onDelete: 'cascade',
-            onUpdate: 'restrict',
+            onUpdate: 'restrict', // 更新时操作
         },
         gift_id: {
             type: INTEGER,
@@ -40,22 +38,24 @@ module.exports = (app) => {
             comment: '礼物id',
             references: {
                 model: 'gift',
-                key: 'id',
+                key: 'id'
             },
             onDelete: 'cascade',
-            onUpdate: 'restrict',
+            onUpdate: 'restrict', // 更新时操作
         },
         created_time: DATE,
         updated_time: DATE,
-    })
+    });
+
     // 关联关系
     LiveGift.associate = function (models) {
         // 关联用户
-        LiveGift.belongsTo(app.model.User)
+        LiveGift.belongsTo(app.model.User);
         // 关联直播间
-        LiveGift.belongsTo(app.model.Live)
+        LiveGift.belongsTo(app.model.Live);
         // 关联礼物
-        LiveGift.belongsTo(app.model.Gift)
+        LiveGift.belongsTo(app.model.Gift);
     }
-    return LiveGift
-}
+
+    return LiveGift;
+};

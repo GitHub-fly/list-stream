@@ -1,19 +1,17 @@
-/* eslint-disable no-unused-vars */
-'use strict'
+module.exports = app => {
+    const { STRING, INTEGER, DATE, ENUM, TEXT } = app.Sequelize;
 
-module.exports = (app) => {
-    const { INTEGER, STRING, DATE, ENUM, TEXT } = app.Sequelize
     const Comment = app.model.define('comment', {
         id: {
             type: INTEGER(20),
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         content: {
             type: TEXT,
             allowNull: false,
             defaultValue: '',
-            comment: '评论内容',
+            comment: '评论内容'
         },
         live_id: {
             type: INTEGER,
@@ -22,10 +20,10 @@ module.exports = (app) => {
             comment: '直播间id',
             references: {
                 model: 'live',
-                key: 'id',
+                key: 'id'
             },
             onDelete: 'cascade',
-            onUpdate: 'restrict',
+            onUpdate: 'restrict', // 更新时操作
         },
         user_id: {
             type: INTEGER,
@@ -34,20 +32,22 @@ module.exports = (app) => {
             comment: '用户id',
             references: {
                 model: 'user',
-                key: 'id',
+                key: 'id'
             },
             onDelete: 'cascade',
-            opUpdate: 'restrict',
+            onUpdate: 'restrict', // 更新时操作
         },
         created_time: DATE,
         updated_time: DATE,
-    })
+    });
+
     // 关联关系
     Comment.associate = function (models) {
-        //   关联发布人
-        Comment.belongsTo(app.model.User)
-        //   关联直播间
-        Comment.belongsTo(app.model.Live)
+        // 关联发布人
+        Comment.belongsTo(app.model.User);
+        // 关联直播间
+        Comment.belongsTo(app.model.Live);
     }
-    return Comment
-}
+
+    return Comment;
+};

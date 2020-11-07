@@ -1,24 +1,23 @@
-'use strict'
-module.exports = (app) => {
-    const { STRING, INTEGER, DATE, ENUM, TEXT } = app.Sequelize
+module.exports = app => {
+    const { STRING, INTEGER, DATE, ENUM, TEXT } = app.Sequelize;
 
     const Live = app.model.define('live', {
         id: {
             type: INTEGER(20),
             primaryKey: true,
-            autoIncrement: true,
+            autoIncrement: true
         },
         title: {
             type: STRING(100),
             allowNull: false,
             defaultValue: '',
-            comment: '直播间标题',
+            comment: '直播间标题'
         },
         cover: {
             type: STRING,
             allowNull: true,
             defaultValue: '',
-            comment: '直播间封面',
+            comment: '直播间封面'
         },
         user_id: {
             type: INTEGER,
@@ -27,7 +26,7 @@ module.exports = (app) => {
             comment: '用户id',
             references: {
                 model: 'user',
-                key: 'id',
+                key: 'id'
             },
             onDelete: 'cascade',
             onUpdate: 'restrict', // 更新时操作
@@ -36,13 +35,13 @@ module.exports = (app) => {
             type: INTEGER,
             allowNull: false,
             defaultValue: 0,
-            comment: '总观看人数',
+            comment: '总观看人数'
         },
         coin: {
             type: INTEGER,
             allowNull: false,
             defaultValue: 0,
-            comment: '总金币',
+            comment: '总金币'
         },
         key: {
             type: STRING,
@@ -54,22 +53,22 @@ module.exports = (app) => {
             type: INTEGER(1),
             allowNull: false,
             defaultValue: 0,
-            comment: '直播间状态 0未开播 1直播中 2暂停直播 3直播结束',
+            comment: '直播间状态 0未开播 1直播中 2暂停直播 3直播结束'
         },
         created_time: {
-            type: DATE,
-            get() {
+            type:DATE,
+            get(){ 
                 return app.formatTime(this.getDataValue('created_time'))
-            },
+            }
         },
         updated_time: DATE,
-    })
+    });
 
     // 关联关系
     Live.associate = function (models) {
         // 关联主播
-        Live.belongsTo(app.model.User)
+        Live.belongsTo(app.model.User);
     }
 
-    return Live
-}
+    return Live;
+};
