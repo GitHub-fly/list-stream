@@ -33,7 +33,8 @@ module.exports = (option, app) => {
                 id: user.id,
             },
         })
-        console.log('根据token得到的用户信息' + user)
+        console.log('根据token得到的用户信息')
+        console.log(user)
         if (!user) {
             ctx.throw(400, '当前用户不存在！')
         }

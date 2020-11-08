@@ -89,7 +89,7 @@ class UserController extends Controller {
         }
 
         // 验证密码
-        await ctx.checkPassword(password, user.password)
+        // await ctx.checkPassword(password, user.password)
 
         user = JSON.parse(JSON.stringify(user))
 
@@ -155,6 +155,8 @@ class UserController extends Controller {
         })
 
         let { username, password, avatar, wxid, qqid, wbid } = ctx.request.body
+        console.log('前端传递的参数为:')
+        console.log(ctx.request.body)
         let user = {}
         // 验证用户是否已经存在
         if (!wxid) {
@@ -178,8 +180,10 @@ class UserController extends Controller {
                 },
             })
         }
+        console.log('根据openId查到的用户信息：')
         console.log(JSON.stringify(user))
         if (!user) {
+            console.log('开始创建用户')
             user = await app.model.User.create({
                 username,
                 password,
@@ -188,6 +192,8 @@ class UserController extends Controller {
                 qqid,
                 wbid,
             })
+            console.log('创建的用户信息如下：')
+            console.log(user)
             if (!user) {
                 ctx.throw(400, '创建用户失败')
             }

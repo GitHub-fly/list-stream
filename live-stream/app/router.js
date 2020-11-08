@@ -90,6 +90,8 @@ module.exports = (app) => {
     router.get('/admin/live/close/:id', controller.admin.live.closelive)
     // 删除直播间
     router.get('/admin/live/delete/:id', controller.admin.live.delete)
+    // 上传图片
+    router.post('/api/upload', controller.api.common.upload)
 
     io.of('/').route('joinLive', io.controller.nsp.joinLive)
     io.of('/').route('leaveLive', io.controller.nsp.leaveLive)
