@@ -10,7 +10,7 @@ export default new Vuex.Store({
 	state: {
 		user: null,
 		token: null,
-		socket: null
+		socket: null,
 	},
 	actions: {
 		/**
@@ -157,6 +157,12 @@ export default new Vuex.Store({
 					data: JSON.stringify(state.user)
 				});
 			});
+		},
+
+		createLive({
+			state
+		}, live) {
+			$H.createLive(live);
 		}
 	}
 });

@@ -1,13 +1,9 @@
+import $C from './config.js';
 export default {
 	// 全局配置
 	common: {
-		// #ifndef H5
 		// baseUrl: 'http://127.0.0.1:7001/api',
-		baseUrl: 'http://xun-uni-live.utools.club/api',
-		// #endif
-		// #ifdef H5
-		baseUrl: '/api',
-		// #endif
+		baseUrl: $C.baseUrl + '/api',
 		header: {
 			'Content-Type': 'application/json;charset=UTF-8',
 		},
@@ -153,5 +149,10 @@ export default {
 				}
 			});
 		});
+	},
+
+	createLive(live) {
+		this.common.token = uni.getStorageSync('token');
+		this.post('/live/create', live);
 	}
 };
