@@ -68,6 +68,12 @@ module.exports = (app) => {
             defaultValue: '',
             comment: '微博id',
         },
+        phone: {
+            type: STRING,
+            allowNull: true,
+            defaultValue: '',
+            comment: '手机号',
+        },
     })
 
     User.associate = function (models) {

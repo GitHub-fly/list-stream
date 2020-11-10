@@ -159,21 +159,24 @@ class UserController extends Controller {
         console.log(ctx.request.body)
         let user = {}
         // 验证用户是否已经存在
-        if (!wxid) {
+        if (wxid !== '') {
+            console.log('微信验证')
             user = await app.model.User.findOne({
                 where: {
                     wxid,
                 },
             })
         }
-        if (!qqid) {
+        if (qqid !== '') {
+            console.log('QQ验证')
             user = await app.model.User.findOne({
                 where: {
                     qqid,
                 },
             })
         }
-        if (!wbid) {
+        if (wbid !== '') {
+            console.log('微博验证')
             user = await app.model.User.findOne({
                 where: {
                     wbid,
@@ -191,6 +194,7 @@ class UserController extends Controller {
                 wxid,
                 qqid,
                 wbid,
+                coin: 100,
             })
             console.log('创建的用户信息如下：')
             console.log(user)
